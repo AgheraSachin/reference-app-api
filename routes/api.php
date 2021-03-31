@@ -14,6 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('accessToken', [\App\Http\Controllers\AuthController::class,'accessTokenRetrive']);
+Route::post('signup', [\App\Http\Controllers\AuthController::class,'signup']);
