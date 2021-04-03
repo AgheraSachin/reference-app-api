@@ -20,3 +20,12 @@ Route::get('/', function () {
 Route::get('clear',function (){
 \Illuminate\Support\Facades\Artisan::call('php artisan config:cache');
 });
+
+Route::get('link',function (){
+    \Illuminate\Support\Facades\Artisan::call('php artisan storage:link');
+});
+
+Route::get('migrate',function (){
+    \Illuminate\Support\Facades\Artisan::call('php artisan migrate:fresh');
+    \Illuminate\Support\Facades\Artisan::call('php artisan passport:install');
+});

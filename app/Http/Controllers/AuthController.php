@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 
@@ -145,6 +146,7 @@ class AuthController extends Controller
      *              "first_name": "Sachin",
      *              "last_name": "Aghera",
      *              "email": "sachinaghera4@gmail.com",
+     *              "profile_pic": "http://localhost/storage/Users/1617456286.jpeg",
      *              "created_at": "2021-03-26T02:35:57.000000Z",
      *              "updated_at": "2021-03-26T02:35:57.000000Z",
      *          },
@@ -211,14 +213,14 @@ class AuthController extends Controller
             if (isset($emailJsonData['elements'][0]['handle~'])) {
                 $request->request->add(['email' => $emailJsonData['elements'][0]['handle~']['emailAddress']]);
             }
-            return $this->signup($request);
+            return $this->signup($request, $accessToken);
         } else {
             return response()->json(['status' => false, 'error' => 'Internal Server Error'], 503);
         }
     }
 
 
-    public function signup(Request $request)
+    public function signup(Request $request, $accessToken)
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
@@ -237,11 +239,25 @@ class AuthController extends Controller
         }
 
         $password = $this->generateRandomString();
+        $profileParams = [
+            'oauth2_access_token' => $accessToken,
+            'projection' => "(id,firstName,lastName,emailAddress,profilePicture(displayImage~:playableStreams))"
+        ];
+        $profilePicJsonData = Http::get('https://api.linkedin.com/v2/me', rawurldecode(http_build_query($profileParams)));
+        if ($profilePicJsonData->successful()) {
+            $profilepic = $profilePicJsonData->json()['profilePicture']['displayImage~']['elements'][2]['identifiers'][0]['identifier'];
+            $content = file_get_contents($profilepic);
+            $filename = time() . '.jpeg';
+            Storage::put('Users/' . $filename, (string)$content, 'public');
+            $request->request->add(['profile_pic' => $filename]);
+        }
+        $profile_pic = $request->input('profile_pic');
         $data = [
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'email' => $request->input('email'),
-            'password' => bcrypt($password)
+            'password' => bcrypt($password),
+            'profile_pic' => isset($profile_pic) ? $request->input('profile_pic') : null,
         ];
 
         $result = User::create($data);
@@ -267,6 +283,7 @@ class AuthController extends Controller
      * @apiName 2
      * @apiGroup Login
      * @apiParam {String} email email id
+     * @apiParam {Url} profile_pic profile_pic
      * @apiParam {string} password password
      * @apiSuccess {Boolean} status true
      * @apiSuccess {number} responseCode responseCode
@@ -282,6 +299,7 @@ class AuthController extends Controller
      *              "first_name": "Sachin",
      *              "last_name": "Aghera",
      *              "email": "sachinaghera4@gmail.com",
+     *              "profile_pic": "http://localhost/storage/Users/1617456286.jpeg",
      *              "created_at": "2021-03-26T02:35:57.000000Z",
      *              "updated_at": "2021-03-26T02:35:57.000000Z",
      *          },
