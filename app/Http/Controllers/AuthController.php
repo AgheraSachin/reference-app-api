@@ -139,15 +139,17 @@ class AuthController extends Controller
      * HTTP/1.1 200 OK
      * {
      *   "status": true,
-     *    "body":  {
-     *          "id": 1,
-     *          "first_name": "Sachin",
-     *          "last_name": "Aghera",
-     *          "email": "sachinaghera4@gmail.com",
-     *          "created_at": "2021-03-26T02:35:57.000000Z",
-     *          "updated_at": "2021-03-26T02:35:57.000000Z",
+     *   "body":  {
+     *        "user":{
+     *               "id": 1,
+     *              "first_name": "Sachin",
+     *              "last_name": "Aghera",
+     *              "email": "sachinaghera4@gmail.com",
+     *              "created_at": "2021-03-26T02:35:57.000000Z",
+     *              "updated_at": "2021-03-26T02:35:57.000000Z",
+     *          },
      *          "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOTgzM2JhMTRjZTBhNTFjNDM3YmJkMTNjOTBkMWViNmQzYTk1MjliOWYyOWJlNzkwMjhjZGQxMDk5M2ZmMjkzMmU0N2RiZjgzYzNmMjA0NTgiLCJpYXQiOjE2MTcyMTI5MzMsIm5iZiI6MTYxNzIxMjkzMywiZXhwIjoxNjQ4NzQ4OTMzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.jYX8b2mj59wURFqfIGXh2Vqtf8y96oCdjDScl2ZiAjGNSrjR_lOGIMo4m4EaBKUCxNjcPvyRU4eTuqznJfsEYeqRtmQRuw3Uifp6fHUIXL6iuDEjiB6t_3f9RM2Sny-QlpV03FUW2F1KRtKKLQSjL9rMemQHefJJ4Bkz0s_rZ1YTpR35kOh9cJ8AenV5pinymKtX6wq1KVrD0aTlEQp33Rlyzk0SS40TqQsKO737VCXQY51Qd-JTJ67jWDmTPtZJKa-V14tGWRQDppx6vMMCY_KZ7eTKWy2KL-zZh_A4JfUoA4O7YalxZK33d2JKtiFLNmAUil5HjalPAcKRFIfD0EqcI8QWdUiJRkBgsliVjzClTLjoUGM2vyF767aXLwn6SDbcesYM-be5jtPsFhAbYzOu7cSdCXtuwbYquNK2QXAUq5CDR7f98TEnvz-yiL3QLgjyaTOj1_KFMhvSxLgl1mMhbJPKaAhxyp1IqCx2QCxIsE7e8BWOBWCc0TGSDsXw2lwGvxMcGF4lg-xKRNiXoH5nwXdQH7Fauxey93EdsRW5ClJcL9YvVgDP-NyXCrVVZv5T8OR1bUFcGm-UTTKo0-i-0bSyld03SrKNJYqpdaltZFbBL9vrFGZwPgt8VcarsWfQE96LhQVOtU7w_hAQsCJP31DUwg9hRi1onyNir6Q"
-     *         }
+     *      }
      * }
      * @apiUse APIError
      * @apiErrorExample {json} Error-400:
@@ -229,8 +231,9 @@ class AuthController extends Controller
 
         if (User::where('email', $request->get('email'))->exists()) {
             $user = User::where('email', $request->get('email'))->first();
-            $user['token'] = $user->createToken('linkedin')->accessToken;
-            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $user], 200);
+            $data['token'] = $user->createToken('linkedin')->accessToken;
+            $data['user'] = $user;
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $data], 200);
         }
 
         $password = $this->generateRandomString();
@@ -273,15 +276,17 @@ class AuthController extends Controller
      * {
      *   "status": true,
      *   "responseCode":200,
-     *    "body":  {
-     *          "id": 1,
-     *          "first_name": "Sachin",
-     *          "last_name": "Aghera",
-     *          "email": "sachinaghera4@gmail.com",
-     *          "created_at": "2021-03-26T02:35:57.000000Z",
-     *          "updated_at": "2021-03-26T02:35:57.000000Z",
+     *     "body":  {
+     *        "user":{
+     *               "id": 1,
+     *              "first_name": "Sachin",
+     *              "last_name": "Aghera",
+     *              "email": "sachinaghera4@gmail.com",
+     *              "created_at": "2021-03-26T02:35:57.000000Z",
+     *              "updated_at": "2021-03-26T02:35:57.000000Z",
+     *          },
      *          "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOTgzM2JhMTRjZTBhNTFjNDM3YmJkMTNjOTBkMWViNmQzYTk1MjliOWYyOWJlNzkwMjhjZGQxMDk5M2ZmMjkzMmU0N2RiZjgzYzNmMjA0NTgiLCJpYXQiOjE2MTcyMTI5MzMsIm5iZiI6MTYxNzIxMjkzMywiZXhwIjoxNjQ4NzQ4OTMzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.jYX8b2mj59wURFqfIGXh2Vqtf8y96oCdjDScl2ZiAjGNSrjR_lOGIMo4m4EaBKUCxNjcPvyRU4eTuqznJfsEYeqRtmQRuw3Uifp6fHUIXL6iuDEjiB6t_3f9RM2Sny-QlpV03FUW2F1KRtKKLQSjL9rMemQHefJJ4Bkz0s_rZ1YTpR35kOh9cJ8AenV5pinymKtX6wq1KVrD0aTlEQp33Rlyzk0SS40TqQsKO737VCXQY51Qd-JTJ67jWDmTPtZJKa-V14tGWRQDppx6vMMCY_KZ7eTKWy2KL-zZh_A4JfUoA4O7YalxZK33d2JKtiFLNmAUil5HjalPAcKRFIfD0EqcI8QWdUiJRkBgsliVjzClTLjoUGM2vyF767aXLwn6SDbcesYM-be5jtPsFhAbYzOu7cSdCXtuwbYquNK2QXAUq5CDR7f98TEnvz-yiL3QLgjyaTOj1_KFMhvSxLgl1mMhbJPKaAhxyp1IqCx2QCxIsE7e8BWOBWCc0TGSDsXw2lwGvxMcGF4lg-xKRNiXoH5nwXdQH7Fauxey93EdsRW5ClJcL9YvVgDP-NyXCrVVZv5T8OR1bUFcGm-UTTKo0-i-0bSyld03SrKNJYqpdaltZFbBL9vrFGZwPgt8VcarsWfQE96LhQVOtU7w_hAQsCJP31DUwg9hRi1onyNir6Q"
-     *         }
+     *      }
      * }
      * @apiUse APIError
      * @apiErrorExample {json} Error-500:
@@ -322,7 +327,8 @@ class AuthController extends Controller
             return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 401);
         }
         $user = $request->user();
-        $user['token'] = $user->createToken('linkedin')->accessToken;
-        return response()->json(['status' => true, 'responseCode' => 200, 'body' => $user], 200);
+        $data['token'] = $user->createToken('linkedin')->accessToken;
+        $data['user'] = $user;
+        return response()->json(['status' => true, 'responseCode' => 200, 'body' => $data], 200);
     }
 }
