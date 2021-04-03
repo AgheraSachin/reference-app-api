@@ -14,6 +14,149 @@ use Illuminate\Support\Facades\Http;
 class AuthController extends Controller
 {
 
+    /**
+     * @apiDefine APIHeader1
+     * @apiHeader {String} Api-Version Api Version
+     * @apiHeader {String} Accept Content type
+     * @apiHeaderExample {json} Header-Example:
+     * {
+     *      "Api-Version": "v1",
+     *      "Accept": "application/json"
+     * }
+     */
+
+    /**
+     * @apiDefine APIHeader2
+     * @apiHeader {String} Api-Version Api Version
+     * @apiHeader {String} Accept Content type
+     * @apiHeader {String} Authorization  Access Bearer token
+     * @apiHeaderExample {json} Header-Example:
+     * {
+     *      "Api-Version": "v1",
+     *      "Accept": "application/json",
+     *      "Authorization": "Bearer ".{{token}}
+     * }
+     */
+
+    /**
+     * @apiDefine APIError
+     * @apiError {Boolean} success false
+     * @apiError {String} message Error message
+     */
+
+    /**
+     * @apiDefine Error401Example
+     * @apiErrorExample {json} Error-401:
+     * Error 401: Unauthorized
+     * {
+     *      "success": false,
+     *      "message": "Unauthenticated! Login to continue."
+     * }
+     */
+
+    /**
+     * @apiDefine Error422ValidEmailExample
+     * @apiErrorExample {json} Error-422:
+     * Error 422: Unprocessable Entity
+     * {
+     *      "success": false,
+     *      "message": "The email must be a valid email address."
+     * }
+     */
+
+    /**
+     * @apiDefine Error422UniqueEmailExample
+     * @apiErrorExample {json} Error-422:
+     * Error 422: Unprocessable Entity
+     * {
+     *      "success": false,
+     *      "message": "The email has already been taken."
+     * }
+     */
+
+    /**
+     * @apiDefine ErrorPassLengthExample
+     * @apiErrorExample {json} Error-422:
+     * Error 422: Unprocessable Entity
+     * {
+     *      "success": false,
+     *      "message": "The password must be at least 8 characters."
+     * }
+     */
+
+    /**
+     * @apiDefine ErrorPassConfirmExample
+     * @apiErrorExample {json} Error-422:
+     * Error 422: Unprocessable Entity
+     * {
+     *      "success": false,
+     *      "message": "The password confirmation does not match."
+     * }
+     */
+
+    /**
+     * @apiDefine Error404Example
+     * @apiErrorExample {json} Error-404:
+     * Error 404: Not Found
+     * {
+     *      "success": false,
+     *      "message": "Resource not found."
+     * }
+     */
+
+    /**
+     * @apiDefine Error405Example
+     * @apiErrorExample {json} Error-405:
+     * Error 405: Method Not Allowed
+     * {
+     *      "success": false,
+     *      "message": "Method Not Allowed."
+     * }
+     */
+
+    /**
+     * @apiDefine Error500Example
+     * @apiErrorExample {json} Error-500:
+     * Error 500: Internal Server Error
+     * {
+     *      "success": false,
+     *      "message": "Something went wrong, please try after some time."
+     * }
+     */
+
+
+    /**
+     * @api {post} /accessToken 1. Get AccessToken
+     * @apiName 1
+     * @apiGroup Login
+     * @apiParam {String} code Authorization code from linkedin
+     * @apiParam {string} requested_url URL
+     * @apiParam {string} client_id Client ID
+     * @apiParam {String} client_secret Client Secret
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *   "status": true,
+     *    "body":  {
+     *          "id": 1,
+     *          "first_name": "Sachin",
+     *          "last_name": "Aghera",
+     *          "email": "sachinaghera4@gmail.com",
+     *          "created_at": "2021-03-26T02:35:57.000000Z",
+     *          "updated_at": "2021-03-26T02:35:57.000000Z",
+     *          "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOTgzM2JhMTRjZTBhNTFjNDM3YmJkMTNjOTBkMWViNmQzYTk1MjliOWYyOWJlNzkwMjhjZGQxMDk5M2ZmMjkzMmU0N2RiZjgzYzNmMjA0NTgiLCJpYXQiOjE2MTcyMTI5MzMsIm5iZiI6MTYxNzIxMjkzMywiZXhwIjoxNjQ4NzQ4OTMzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.jYX8b2mj59wURFqfIGXh2Vqtf8y96oCdjDScl2ZiAjGNSrjR_lOGIMo4m4EaBKUCxNjcPvyRU4eTuqznJfsEYeqRtmQRuw3Uifp6fHUIXL6iuDEjiB6t_3f9RM2Sny-QlpV03FUW2F1KRtKKLQSjL9rMemQHefJJ4Bkz0s_rZ1YTpR35kOh9cJ8AenV5pinymKtX6wq1KVrD0aTlEQp33Rlyzk0SS40TqQsKO737VCXQY51Qd-JTJ67jWDmTPtZJKa-V14tGWRQDppx6vMMCY_KZ7eTKWy2KL-zZh_A4JfUoA4O7YalxZK33d2JKtiFLNmAUil5HjalPAcKRFIfD0EqcI8QWdUiJRkBgsliVjzClTLjoUGM2vyF767aXLwn6SDbcesYM-be5jtPsFhAbYzOu7cSdCXtuwbYquNK2QXAUq5CDR7f98TEnvz-yiL3QLgjyaTOj1_KFMhvSxLgl1mMhbJPKaAhxyp1IqCx2QCxIsE7e8BWOBWCc0TGSDsXw2lwGvxMcGF4lg-xKRNiXoH5nwXdQH7Fauxey93EdsRW5ClJcL9YvVgDP-NyXCrVVZv5T8OR1bUFcGm-UTTKo0-i-0bSyld03SrKNJYqpdaltZFbBL9vrFGZwPgt8VcarsWfQE96LhQVOtU7w_hAQsCJP31DUwg9hRi1onyNir6Q"
+     *         }
+     * }
+     * @apiUse APIError
+     * @apiErrorExample {json} Error-400:
+     * Error 422: Unprocessable Entity
+     * {
+     *   "success": false,
+     *   "body": "Server Error."
+     * }
+     */
     public function accessTokenRetrive(Request $request)
     {
 
@@ -72,6 +215,7 @@ class AuthController extends Controller
         }
     }
 
+
     public function signup(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -80,13 +224,13 @@ class AuthController extends Controller
             'email' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'error' => $validator->errors()]);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
         }
 
         if (User::where('email', $request->get('email'))->exists()) {
             $user = User::where('email', $request->get('email'))->first();
             $user['token'] = $user->createToken('linkedin')->accessToken;
-            return response()->json(['status' => true, 'data' => $user], 200);
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $user], 200);
         }
 
         $password = $this->generateRandomString();
@@ -102,16 +246,83 @@ class AuthController extends Controller
         Mail::to($request->get('email'))->send(new RegisterPasswordMail($password));
         if ($result) {
             if (!Auth::attempt(['email' => $request->get('email'), 'password' => $password])) {
-                return response()->json(['status' => false, 'message' => 'Unauthorized'], 401);
+                return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 401);
             }
             $user = $request->user();
             $user['token'] = $user->createToken('linkedin')->accessToken;
-            return response()->json(['status' => true, 'data' => $user], 200);
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $user], 200);
         }
     }
 
     function generateRandomString($length = 10)
     {
         return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
+    }
+
+    /**
+     * @api {post} /signin 2. Signin API
+     * @apiName 2
+     * @apiGroup Login
+     * @apiParam {String} email email id
+     * @apiParam {string} password password
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode responseCode
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *   "status": true,
+     *   "responseCode":200,
+     *    "body":  {
+     *          "id": 1,
+     *          "first_name": "Sachin",
+     *          "last_name": "Aghera",
+     *          "email": "sachinaghera4@gmail.com",
+     *          "created_at": "2021-03-26T02:35:57.000000Z",
+     *          "updated_at": "2021-03-26T02:35:57.000000Z",
+     *          "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOTgzM2JhMTRjZTBhNTFjNDM3YmJkMTNjOTBkMWViNmQzYTk1MjliOWYyOWJlNzkwMjhjZGQxMDk5M2ZmMjkzMmU0N2RiZjgzYzNmMjA0NTgiLCJpYXQiOjE2MTcyMTI5MzMsIm5iZiI6MTYxNzIxMjkzMywiZXhwIjoxNjQ4NzQ4OTMzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.jYX8b2mj59wURFqfIGXh2Vqtf8y96oCdjDScl2ZiAjGNSrjR_lOGIMo4m4EaBKUCxNjcPvyRU4eTuqznJfsEYeqRtmQRuw3Uifp6fHUIXL6iuDEjiB6t_3f9RM2Sny-QlpV03FUW2F1KRtKKLQSjL9rMemQHefJJ4Bkz0s_rZ1YTpR35kOh9cJ8AenV5pinymKtX6wq1KVrD0aTlEQp33Rlyzk0SS40TqQsKO737VCXQY51Qd-JTJ67jWDmTPtZJKa-V14tGWRQDppx6vMMCY_KZ7eTKWy2KL-zZh_A4JfUoA4O7YalxZK33d2JKtiFLNmAUil5HjalPAcKRFIfD0EqcI8QWdUiJRkBgsliVjzClTLjoUGM2vyF767aXLwn6SDbcesYM-be5jtPsFhAbYzOu7cSdCXtuwbYquNK2QXAUq5CDR7f98TEnvz-yiL3QLgjyaTOj1_KFMhvSxLgl1mMhbJPKaAhxyp1IqCx2QCxIsE7e8BWOBWCc0TGSDsXw2lwGvxMcGF4lg-xKRNiXoH5nwXdQH7Fauxey93EdsRW5ClJcL9YvVgDP-NyXCrVVZv5T8OR1bUFcGm-UTTKo0-i-0bSyld03SrKNJYqpdaltZFbBL9vrFGZwPgt8VcarsWfQE96LhQVOtU7w_hAQsCJP31DUwg9hRi1onyNir6Q"
+     *         }
+     * }
+     * @apiUse APIError
+     * @apiErrorExample {json} Error-500:
+     * Error 500: Unprocessable Entity
+     * {
+     *   "status": false,
+     *   "responseCode":500,
+     *   "body": "Server Error."
+     * },
+     * @apiErrorExample {json} Error-401:
+     * Error 401: Unauthorized Entity
+     * {
+     *   "status": false,
+     *   "responseCode":401,
+     *   "body": "Unauthorized."
+     * },
+     * @apiErrorExample {json} Error-503:
+     * Error 503: Validation Error
+     * {
+     *   "status": false,
+     *   "responseCode":503,
+     *   "body": "error object"
+     * },
+     *
+     */
+
+    public function signin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
+        }
+
+        if (!Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
+            return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 401);
+        }
+        $user = $request->user();
+        $user['token'] = $user->createToken('linkedin')->accessToken;
+        return response()->json(['status' => true, 'responseCode' => 200, 'body' => $user], 200);
     }
 }

@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('accessToken', [\App\Http\Controllers\AuthController::class,'accessTokenRetrive']);
 Route::post('signup', [\App\Http\Controllers\AuthController::class,'signup']);
+Route::post('signin', [\App\Http\Controllers\AuthController::class,'signin']);
