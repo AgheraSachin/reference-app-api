@@ -135,7 +135,7 @@ class UnverifiedRatingRequestController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
         }
-        if (UnverifiedRatingRequest::where('url_token', $request->get('url_token'))->whereNot('reviwed_on', null)) {
+        if (UnverifiedRatingRequest::where('url_token', $request->get('url_token'))->whereNotNull('reviwed_on')->exists()) {
             return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'Review on this request already submitted.'], 503);
         }
         $params = [
