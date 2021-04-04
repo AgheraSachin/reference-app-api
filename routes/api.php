@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('accessToken', [\App\Http\Controllers\AuthController::class,'accessTokenRetrive']);
-Route::post('signup', [\App\Http\Controllers\AuthController::class,'signup']);
-Route::post('signin', [\App\Http\Controllers\AuthController::class,'signin']);
+Route::post('accessToken', [\App\Http\Controllers\AuthController::class, 'accessTokenRetrive']);
+Route::post('signup', [\App\Http\Controllers\AuthController::class, 'signup']);
+Route::post('signin', [\App\Http\Controllers\AuthController::class, 'signin']);
+Route::post('request-for-unverified-rating-review', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'review']);
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('request-for-unverified-rating', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'makeRequest']);
+    Route::get('publish-unverified-rating/{id}', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'publish']);
+    Route::get('all-unverified-rating', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'allRatings']);
+});

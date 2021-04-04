@@ -28,12 +28,10 @@ class AuthController extends Controller
 
     /**
      * @apiDefine APIHeader2
-     * @apiHeader {String} Api-Version Api Version
      * @apiHeader {String} Accept Content type
      * @apiHeader {String} Authorization  Access Bearer token
      * @apiHeaderExample {json} Header-Example:
      * {
-     *      "Api-Version": "v1",
      *      "Accept": "application/json",
      *      "Authorization": "Bearer ".{{token}}
      * }
