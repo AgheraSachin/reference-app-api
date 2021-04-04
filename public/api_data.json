@@ -98,7 +98,7 @@
     "groupTitle": "Login",
     "sampleRequest": [
       {
-        "url": "http://localhost:8000/api/accessToken"
+        "url": "https://reference.app/api/public/api/accessToken"
       }
     ]
   },
@@ -211,7 +211,7 @@
     "groupTitle": "Login",
     "sampleRequest": [
       {
-        "url": "http://localhost:8000/api/signin"
+        "url": "https://reference.app/api/public/api/signin"
       }
     ]
   },
@@ -305,7 +305,7 @@
     "groupTitle": "Unverified_Rating",
     "sampleRequest": [
       {
-        "url": "http://localhost:8000/api/request-for-unverified-rating"
+        "url": "https://reference.app/api/public/api/request-for-unverified-rating"
       }
     ],
     "header": {
@@ -454,7 +454,7 @@
     "groupTitle": "Unverified_Rating",
     "sampleRequest": [
       {
-        "url": "http://localhost:8000/api/request-for-unverified-rating-review"
+        "url": "https://reference.app/api/public/api/request-for-unverified-rating-review"
       }
     ]
   },
@@ -535,7 +535,7 @@
     "groupTitle": "Unverified_Rating",
     "sampleRequest": [
       {
-        "url": "http://localhost:8000/api/publish-unverified-rating/{id}"
+        "url": "https://reference.app/api/public/api/publish-unverified-rating/{id}"
       }
     ]
   },
@@ -616,7 +616,7 @@
     "groupTitle": "Unverified_Rating",
     "sampleRequest": [
       {
-        "url": "http://localhost:8000/api/all-unverified-rating"
+        "url": "https://reference.app/api/public/api/all-unverified-rating"
       }
     ]
   }
