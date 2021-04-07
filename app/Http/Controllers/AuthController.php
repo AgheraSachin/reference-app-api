@@ -281,7 +281,6 @@ class AuthController extends Controller
      * @apiName 2
      * @apiGroup Login
      * @apiParam {String} email email id
-     * @apiParam {Url} profile_pic profile_pic
      * @apiParam {string} password password
      * @apiSuccess {Boolean} status true
      * @apiSuccess {number} responseCode responseCode
@@ -332,7 +331,7 @@ class AuthController extends Controller
     public function signin(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required',
+            'email' => 'required|exists:users,email',
             'password' => 'required',
         ]);
         if ($validator->fails()) {
