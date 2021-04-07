@@ -331,7 +331,7 @@ class AuthController extends Controller
     public function signin(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|exists:users,email',
+            'email' => 'required',
             'password' => 'required',
         ]);
         if ($validator->fails()) {
