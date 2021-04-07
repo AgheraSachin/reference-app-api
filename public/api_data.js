@@ -120,13 +120,6 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "Url",
-            "optional": false,
-            "field": "profile_pic",
-            "description": "<p>profile_pic</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "password",
