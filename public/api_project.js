@@ -3,8 +3,8 @@ define({
   "version": "0.1.0",
   "description": "Reference APP API Documentation",
   "title": "Reference APP API Documentation",
-  "url": "http://localhost:8000/api",
-  "sampleUrl": "http://localhost:8000/api",
+  "url": "https://reference.app/api/public/api",
+  "sampleUrl": "https://reference.app/api/public/api",
   "order": [
     "1",
     "2",
@@ -31,7 +31,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-04-07T05:31:20.746Z",
+    "time": "2021-04-10T12:23:20.903Z",
     "url": "https://apidocjs.com",
     "version": "0.27.1"
   }

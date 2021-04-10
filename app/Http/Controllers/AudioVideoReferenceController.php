@@ -15,6 +15,39 @@ use Illuminate\Support\Str;
 
 class AudioVideoReferenceController extends Controller
 {
+    /**
+     * @api {post} /request-for-audio-video-reference 1. Make Request For Give Audio/Video Reference
+     * @apiName 1
+     * @apiUse APIHeader2
+     * @apiGroup Audio/Video Reference
+     * @apiParam {String} email email
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "Request sent successfully"
+     *  }
+     * @apiUse APIError
+     * @apiErrorExample {json} Error-503:
+     * Error 503: Validation Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 503,
+     *   "body": "Validation Object"
+     * },
+     *
+     * @apiErrorExample {json} Error-500:
+     * Error 500: Server Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 500,
+     *   "body": "Something went wrong"
+     * }
+     */
     public function makeRequestForAudioVideoReference(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -43,6 +76,41 @@ class AudioVideoReferenceController extends Controller
         }
     }
 
+    /**
+     * @api {post} /post-review 2. Complete Review for Audio/Video reference
+     * @apiName 2
+     * @apiGroup Audio/Video Reference
+     * @apiParam {String} token string
+     * @apiParam {String} review_type string
+     * @apiParam {Number} rating number
+     * @apiParam {File} review file
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "Review Successfully."
+     *  }
+     * @apiUse APIError
+     * @apiErrorExample {json} Error-503:
+     * Error 503: Validation Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 503,
+     *   "body": "Validation Object"
+     * },
+     *
+     * @apiErrorExample {json} Error-500:
+     * Error 500: Server Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 500,
+     *   "body": "Something went wrong"
+     * }
+     */
     public function giveReviewAudioVideo(Request $request)
     {
         $validator = Validator::make($request->all(), [
