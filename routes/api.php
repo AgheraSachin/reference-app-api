@@ -27,4 +27,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('request-for-audio-video-reference', [\App\Http\Controllers\AudioVideoReferenceController::class, 'makeRequestForAudioVideoReference']);
     Route::post('post-review', [\App\Http\Controllers\AudioVideoReferenceController::class, 'giveReviewAudioVideo']);
+
+
+    Route::get('signout', [\App\Http\Controllers\AuthController::class, 'signout']);
 });

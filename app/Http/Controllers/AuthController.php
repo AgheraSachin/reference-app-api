@@ -338,7 +338,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
         }
-        if(!User::where('email',$request->get('email'))->exists()){
+        if (!User::where('email', $request->get('email'))->exists()) {
             return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'No User found.'], 401);
         }
         if (!Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
@@ -348,5 +348,28 @@ class AuthController extends Controller
         $data['token'] = $user->createToken('linkedin')->accessToken;
         $data['user'] = $user;
         return response()->json(['status' => true, 'responseCode' => 200, 'body' => $data], 200);
+    }
+
+    /**
+     * @api {get} /signout 3. Signout User
+     * @apiName 3
+     * @apiUse APIHeader2
+     * @apiGroup Login
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "logout successfully"
+     *  }
+     */
+    public function signout()
+    {
+        $user = Auth::user()->token();
+        $user->revoke();
+        return response()->json(['status' => true, 'responseCode' => 200, 'body' => "logout successfully"], 200);
     }
 }
