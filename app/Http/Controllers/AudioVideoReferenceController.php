@@ -9,6 +9,7 @@ use App\Models\VerifiedRatingRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -40,5 +41,52 @@ class AudioVideoReferenceController extends Controller
         } else {
             return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
         }
+    }
+
+    public function giveReviewAudioVideo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required|exists:verified_rating_requests,url_token',
+            'review_type' => 'required',
+            'rating' => 'required',
+            'review' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
+        }
+        if (VerifiedRatingRequest::where('url_token', $request->get('token'))->whereNotNull('reviwed_on')->exists()) {
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'Review on this request already submitted.'], 503);
+        }
+        $request_sent_data = VerifiedRatingRequest::where('url_token', $request->get('token'))->first();
+
+        if ($request_sent_data->from_user_id == Auth::user()->id) {
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'You can not review your self.'], 503);
+        }
+        $params = [
+            'to_user_id' => Auth::user()->id,
+            'rating' => $request->get('rating'),
+            'reviwed_on' => now(),
+        ];
+
+        if ($request->get('review_type') == 'audio') {
+            $filename = time() . '.mp3';
+            $content = file_get_contents($request->file('review'));
+            Storage::put('Audio/' . $filename, (string)$content, 'public');
+            $params['audio'] = $filename;
+        } else {
+            $filename = time() . '.mp4';
+            $content = file_get_contents($request->file('review'));
+            Storage::put('Audio/' . $filename, (string)$content, 'public');
+            $params['video'] = $filename;
+        }
+
+        $result = VerifiedRatingRequest::where('url_token', $request->get('token'))->update($params);
+
+        if ($result) {
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => 'Review Successfully'], 200);
+        } else {
+            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 500);
+        }
+
     }
 }

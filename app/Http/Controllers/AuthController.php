@@ -266,8 +266,9 @@ class AuthController extends Controller
                 return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 401);
             }
             $user = $request->user();
-            $user['token'] = $user->createToken('linkedin')->accessToken;
-            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $user], 200);
+            $data['token'] = $user->createToken('linkedin')->accessToken;
+            $data['user'] = $user;
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $data], 200);
         }
     }
 
