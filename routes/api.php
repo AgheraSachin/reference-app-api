@@ -25,5 +25,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('all-unverified-rating', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'allRatings']);
 
 
-    Route::post('request-for-audio-video-refference', [\App\Http\Controllers\AudioVideoReferenceController::class, 'makeRequestForAudioVideoReference']);
+    Route::post('request-for-audio-video-reference', [\App\Http\Controllers\AudioVideoReferenceController::class, 'makeRequestForAudioVideoReference']);
+    Route::post('post-review', [\App\Http\Controllers\AudioVideoReferenceController::class, 'giveReviewAudioVideo']);
 });
