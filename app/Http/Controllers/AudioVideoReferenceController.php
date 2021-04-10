@@ -19,7 +19,7 @@ class AudioVideoReferenceController extends Controller
      * @api {post} /request-for-audio-video-reference 1. Make Request For Give Audio/Video Reference
      * @apiName 1
      * @apiUse APIHeader2
-     * @apiGroup Audio/Video Reference
+     * @apiGroup Audio Video Reference
      * @apiParam {String} email email
      * @apiSuccess {Boolean} status true
      * @apiSuccess {number} responseCode number
@@ -79,7 +79,7 @@ class AudioVideoReferenceController extends Controller
     /**
      * @api {post} /post-review 2. Complete Review for Audio/Video reference
      * @apiName 2
-     * @apiGroup Audio/Video Reference
+     * @apiGroup Audio Video Reference
      * @apiParam {String} token string
      * @apiParam {String} review_type string
      * @apiParam {Number} rating number

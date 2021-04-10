@@ -4,7 +4,7 @@
     "url": "/request-for-audio-video-reference",
     "title": "1. Make Request For Give Audio/Video Reference",
     "name": "1",
-    "group": "Audio/Video_Reference",
+    "group": "Audio_Video_Reference",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -86,7 +86,7 @@
     },
     "version": "0.0.0",
     "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/AudioVideoReferenceController.php",
-    "groupTitle": "Audio/Video_Reference",
+    "groupTitle": "Audio_Video_Reference",
     "sampleRequest": [
       {
         "url": "https://reference.app/api/public/api/request-for-audio-video-reference"
@@ -125,7 +125,7 @@
     "url": "/post-review",
     "title": "2. Complete Review for Audio/Video reference",
     "name": "2",
-    "group": "Audio/Video_Reference",
+    "group": "Audio_Video_Reference",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -228,7 +228,7 @@
     },
     "version": "0.0.0",
     "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/AudioVideoReferenceController.php",
-    "groupTitle": "Audio/Video_Reference",
+    "groupTitle": "Audio_Video_Reference",
     "sampleRequest": [
       {
         "url": "https://reference.app/api/public/api/post-review"
