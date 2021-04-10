@@ -104,7 +104,7 @@ class UnverifiedRatingRequestController extends Controller
      * {
      *      "status": true,
      *      "responseCode": 200,
-     *      "body": "Review on this request already submitted."
+     *      "body": "Review Successfully."
      *  }
      * @apiUse APIError
      * @apiErrorExample {json} Error-503:

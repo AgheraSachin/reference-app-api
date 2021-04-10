@@ -1,6 +1,242 @@
 define({ "api": [
   {
     "type": "post",
+    "url": "/request-for-audio-video-reference",
+    "title": "1. Make Request For Give Audio/Video Reference",
+    "name": "1",
+    "group": "Audio/Video_Reference",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>email</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "body",
+            "description": "<p>object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": true,\n     \"responseCode\": 200,\n     \"body\": \"Request sent successfully\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-503:",
+          "content": "Error 503: Validation Errors\n{\n  \"success\": false,\n  \"responseCode\": 503,\n  \"body\": \"Validation Object\"\n},",
+          "type": "json"
+        },
+        {
+          "title": "Error-500:",
+          "content": "Error 500: Server Errors\n{\n  \"success\": false,\n  \"responseCode\": 500,\n  \"body\": \"Something went wrong\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/AudioVideoReferenceController.php",
+    "groupTitle": "Audio/Video_Reference",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/request-for-audio-video-reference"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>Content type</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Access Bearer token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n     \"Accept\": \"application/json\",\n     \"Authorization\": \"Bearer \".{{token}}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/post-review",
+    "title": "2. Complete Review for Audio/Video reference",
+    "name": "2",
+    "group": "Audio/Video_Reference",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>string</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "review_type",
+            "description": "<p>string</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "File",
+            "optional": false,
+            "field": "review",
+            "description": "<p>file</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "body",
+            "description": "<p>object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": true,\n     \"responseCode\": 200,\n     \"body\": \"Review Successfully.\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-503:",
+          "content": "Error 503: Validation Errors\n{\n  \"success\": false,\n  \"responseCode\": 503,\n  \"body\": \"Validation Object\"\n},",
+          "type": "json"
+        },
+        {
+          "title": "Error-500:",
+          "content": "Error 500: Server Errors\n{\n  \"success\": false,\n  \"responseCode\": 500,\n  \"body\": \"Something went wrong\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/AudioVideoReferenceController.php",
+    "groupTitle": "Audio/Video_Reference",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/post-review"
+      }
+    ]
+  },
+  {
+    "type": "post",
     "url": "/accessToken",
     "title": "1. Get AccessToken",
     "name": "1",
@@ -405,7 +641,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-200:",
-          "content": "HTTP/1.1 200 OK\n{\n     \"status\": true,\n     \"responseCode\": 200,\n     \"body\": \"Review on this request already submitted.\"\n }",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": true,\n     \"responseCode\": 200,\n     \"body\": \"Review Successfully.\"\n }",
           "type": "json"
         }
       ]

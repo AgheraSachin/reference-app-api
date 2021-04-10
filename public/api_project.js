@@ -31,7 +31,11 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
+<<<<<<< HEAD
     "time": "2021-04-07T05:34:52.306Z",
+=======
+    "time": "2021-04-10T12:23:20.903Z",
+>>>>>>> 834cef6442634bb7381a5c15ddaca14d1b8e7839
     "url": "https://apidocjs.com",
     "version": "0.27.1"
   }
