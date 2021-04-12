@@ -339,7 +339,7 @@ class AuthController extends Controller
             return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
         }
         if (!User::where('email', $request->get('email'))->exists()) {
-            return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'No User found.'], 401);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'No User found.'], 401);
         }
         if (!Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
             return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 401);
