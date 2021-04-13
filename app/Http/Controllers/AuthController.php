@@ -169,7 +169,7 @@ class AuthController extends Controller
             'client_secret' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'error' => $validator->errors()]);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()],200);
         }
 
         $response = Http::asForm()->post('https://www.linkedin.com/oauth/v2/accessToken', [
@@ -183,7 +183,7 @@ class AuthController extends Controller
             $accessToken = $response->json()['access_token'];
             return $this->getUserDetailsfromLinkedIn($accessToken, $request);
         } else {
-            return response()->json(['status' => false, 'error' => 'Internal Server Error'], 503);
+            return response()->json(['status' => false,'responseCode' => 404, 'body' => 'Internal Server Error'], 200);
         }
     }
 
@@ -213,7 +213,7 @@ class AuthController extends Controller
             }
             return $this->signup($request, $accessToken);
         } else {
-            return response()->json(['status' => false, 'error' => 'Internal Server Error'], 503);
+            return response()->json(['status' => false, 'error' => 'Internal Server Error'], 200);
         }
     }
 
@@ -226,7 +226,7 @@ class AuthController extends Controller
             'email' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
         }
 
         if (User::where('email', $request->get('email'))->exists()) {
@@ -263,7 +263,7 @@ class AuthController extends Controller
         Mail::to($request->get('email'))->send(new RegisterPasswordMail($password));
         if ($result) {
             if (!Auth::attempt(['email' => $request->get('email'), 'password' => $password])) {
-                return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 401);
+                return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 200);
             }
             $user = $request->user();
             $data['token'] = $user->createToken('linkedin')->accessToken;
@@ -336,13 +336,13 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()]);
         }
         if (!User::where('email', $request->get('email'))->exists()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'No User found.'], 401);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'No User found.']);
         }
         if (!Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
-            return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 401);
+            return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'],200);
         }
         $user = $request->user();
         $data['token'] = $user->createToken('linkedin')->accessToken;

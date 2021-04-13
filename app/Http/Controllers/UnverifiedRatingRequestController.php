@@ -52,10 +52,10 @@ class UnverifiedRatingRequestController extends Controller
             'email' => 'required|email',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
         }
         if (UnverifiedRatingRequest::where(['from_user_id' => Auth::user()->id, 'email' => $request->get('email')])->exists()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => "You have already previouslly requested same user"], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => "You have already previouslly requested same user"], 200);
         }
 
         $lastData = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->first();
@@ -64,7 +64,7 @@ class UnverifiedRatingRequestController extends Controller
             if ($lastData->last_request_count < config('constants.daily_unverified_email_request')) {
                 $lastRequestCount += $lastData->last_request_count;
             } else {
-                return response()->json(['status' => false, 'responseCode' => 503, 'body' => "You have reached daily max limit to sent request."], 503);
+                return response()->json(['status' => false, 'responseCode' => 503, 'body' => "You have reached daily max limit to sent request."], 200);
 
             }
         }
@@ -133,10 +133,10 @@ class UnverifiedRatingRequestController extends Controller
             'comment' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
         }
         if (UnverifiedRatingRequest::where('url_token', $request->get('url_token'))->whereNotNull('reviwed_on')->exists()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'Review on this request already submitted.'], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'Review on this request already submitted.'], 200);
         }
         $params = [
             'reviewer_full_name' => $request->get('full_name'),
@@ -151,7 +151,7 @@ class UnverifiedRatingRequestController extends Controller
         if ($result) {
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => 'Review Successfully'], 200);
         } else {
-            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 500);
+            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
         }
     }
 
@@ -193,13 +193,13 @@ class UnverifiedRatingRequestController extends Controller
             'id' => 'required|exists:unverified_request_ratings,id',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
         };
         $result = UnverifiedRatingRequest::where('id', $id)->update(['published' => 1]);
         if ($result) {
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => 'Review published Successfully'], 200);
         } else {
-            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 500);
+            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
         }
     }
 
@@ -258,7 +258,7 @@ class UnverifiedRatingRequestController extends Controller
         if ($result) {
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
         } else {
-            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 500);
+            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
         }
     }
 }
