@@ -54,10 +54,10 @@ class AudioVideoReferenceController extends Controller
             'email' => 'required|email',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
         }
         if (VerifiedRatingRequest::where(['from_user_id' => Auth::user()->id, 'email' => $request->get('email')])->exists()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => "You have already previouslly requested same user"], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => "You have already previouslly requested same user"], 200);
         }
 
         $token = Str::random(60);
@@ -120,15 +120,15 @@ class AudioVideoReferenceController extends Controller
             'review' => 'required'
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
         }
         if (VerifiedRatingRequest::where('url_token', $request->get('token'))->whereNotNull('reviwed_on')->exists()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'Review on this request already submitted.'], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'Review on this request already submitted.'], 200);
         }
         $request_sent_data = VerifiedRatingRequest::where('url_token', $request->get('token'))->first();
 
         if ($request_sent_data->from_user_id == Auth::user()->id) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'You can not review your self.'], 503);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'You can not review your self.'], 200);
         }
         $params = [
             'to_user_id' => Auth::user()->id,
@@ -153,7 +153,7 @@ class AudioVideoReferenceController extends Controller
         if ($result) {
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => 'Review Successfully'], 200);
         } else {
-            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 500);
+            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
         }
 
     }
