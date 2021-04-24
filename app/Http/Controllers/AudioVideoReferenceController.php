@@ -142,9 +142,9 @@ class AudioVideoReferenceController extends Controller
             Storage::put('Audio/' . $filename, (string)$content, 'public');
             $params['audio'] = $filename;
         } else {
-            $filename = time() . '.mp4';
+            $filename = time() . '.webm';
             $content = file_get_contents($request->file('review'));
-            Storage::put('Audio/' . $filename, (string)$content, 'public');
+            Storage::put('Video/' . $filename, (string)$content, 'public');
             $params['video'] = $filename;
         }
 
@@ -156,5 +156,46 @@ class AudioVideoReferenceController extends Controller
             return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
         }
 
+    }
+
+    /**
+     * @api {get} /all-verified-rating 3. Get All Verified ratings
+     * @apiName 2
+     * @apiGroup Audio Video Reference
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "Review Successfully."
+     *  }
+     * @apiUse APIError
+     * @apiErrorExample {json} Error-503:
+     * Error 503: Validation Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 503,
+     *   "body": "Validation Object"
+     * },
+     *
+     * @apiErrorExample {json} Error-500:
+     * Error 500: Server Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 500,
+     *   "body": "Something went wrong"
+     * }
+     */
+    public function allRatings(Request $request)
+    {
+        $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->get();
+        if ($result) {
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
+        } else {
+            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
+        }
     }
 }
