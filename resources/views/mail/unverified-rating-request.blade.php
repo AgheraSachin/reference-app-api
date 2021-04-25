@@ -1,9 +1,19 @@
 <html>
 <head>
-
+    <style>
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
-token : {{$token}},
-user :{{$user}}
+<a href="https://reference.app/submit-ratings?token={{$token}}" role="button" class="button">Click For Rate</a>
 </body>
 </html>
