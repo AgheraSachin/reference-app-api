@@ -80,7 +80,7 @@ class UnverifiedRatingRequestController extends Controller
         $result = UnverifiedRatingRequest::create($params);
 
         if ($result) {
-            Mail::to($request->get('email'))->send(new UnverifiedRatingRequestMail($token, Auth::user(),$request->get('email')));
+            Mail::to($request->get('email'))->send(new UnverifiedRatingRequestMail($token, Auth::user(), $request->get('email')));
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => 'Request sent successfully'], 200);
         } else {
             return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
@@ -204,7 +204,7 @@ class UnverifiedRatingRequestController extends Controller
     }
 
     /**
-     * @api {get} /all-unverified-rating 4. Get All Given Rating
+     * @api {get} /all-unverified-rating?page={page_number}&per_page={count} 4. Get All Given Rating
      * @apiName 4
      * @apiGroup Unverified Rating
      * @apiSuccess {Boolean} status true
@@ -212,29 +212,217 @@ class UnverifiedRatingRequestController extends Controller
      * @apiSuccess {Object} body object
      * @apiSuccessExample {json} Success-200:
      * HTTP/1.1 200 OK
+     *  {
+     * "status": true,
+     * "responseCode": 200,
+     * "body": {
+     * "current_page": 1,
+     * "data": [
      * {
-     *      "status": true,
-     *      "responseCode": 200,
-     *      "body": [
-     *                   {
-     *                       "id": 3,
-     *                       "from_user_id": 1,
-     *                       "email": "test@test1.com",
-     *                       "published": 1,
-     *                       "reviewer_full_name": "Mural tel",
-     *                       "reviewer_occupations": "Software Engineer",
-     *                       "rating": "5",
-     *                       "comment": "He is such a great perrson",
-     *                       "last_request_on": "2021-04-04",
-     *                       "last_request_count": "1",
-     *                       "reviwed_on": "2021-04-04 06:46:30",
-     *                       "url_token": "PcXCHFp9EM60KarvJ2AfAlDxKgNFDihQUIUTWpixMcpoUQQYeOPhsnHbVX6f",
-     *                       "created_at": "2021-04-04T05:46:27.000000Z",
-     *                       "updated_at": "2021-04-04T12:02:33.000000Z",
-     *                       "deleted_at": null
-     *                  }
-     *           ]
-     *  }
+     * "id": 7,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * },
+     * {
+     * "id": 8,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * },
+     * {
+     * "id": 9,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * },
+     * {
+     * "id": 10,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * },
+     * {
+     * "id": 11,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * },
+     * {
+     * "id": 12,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * },
+     * {
+     * "id": 13,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * },
+     * {
+     * "id": 14,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * },
+     * {
+     * "id": 15,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * },
+     * {
+     * "id": 16,
+     * "from_user_id": 1,
+     * "email": "tt@tt.com1",
+     * "published": 0,
+     * "reviewer_full_name": null,
+     * "reviewer_occupations": null,
+     * "rating": null,
+     * "comment": null,
+     * "last_request_on": "2021-04-25",
+     * "last_request_count": "1",
+     * "reviwed_on": null,
+     * "url_token": "LwqmdRDtishpjcyMvwaxXE72Onj02L3JX0crtVesS4DEA1QO1Gvm1zCMrUSL",
+     * "created_at": "2021-04-25T14:46:51.000000Z",
+     * "updated_at": "2021-04-25T14:46:51.000000Z",
+     * "deleted_at": null
+     * }
+     * ],
+     * "first_page_url": "http://localhost:8000/api/all-unverified-rating?page=1",
+     * "from": 1,
+     * "last_page": 2,
+     * "last_page_url": "http://localhost:8000/api/all-unverified-rating?page=2",
+     * "links": [
+     * {
+     * "url": null,
+     * "label": "&laquo; Previous",
+     * "active": false
+     * },
+     * {
+     * "url": "http://localhost:8000/api/all-unverified-rating?page=1",
+     * "label": "1",
+     * "active": true
+     * },
+     * {
+     * "url": "http://localhost:8000/api/all-unverified-rating?page=2",
+     * "label": "2",
+     * "active": false
+     * },
+     * {
+     * "url": "http://localhost:8000/api/all-unverified-rating?page=2",
+     * "label": "Next &raquo;",
+     * "active": false
+     * }
+     * ],
+     * "next_page_url": "http://localhost:8000/api/all-unverified-rating?page=2",
+     * "path": "http://localhost:8000/api/all-unverified-rating",
+     * "per_page": "10",
+     * "prev_page_url": null,
+     * "to": 10,
+     * "total": 16
+     * }
+     * }
      * @apiUse APIError
      * @apiErrorExample {json} Error-503:
      * Error 503: Validation Errors
@@ -254,7 +442,7 @@ class UnverifiedRatingRequestController extends Controller
      */
     public function allRatings(Request $request)
     {
-        $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->get();
+        $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
         if ($result) {
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
         } else {

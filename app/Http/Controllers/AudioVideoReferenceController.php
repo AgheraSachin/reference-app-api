@@ -169,19 +169,66 @@ class AudioVideoReferenceController extends Controller
     }
 
     /**
-     * @api {get} /all-verified-rating 3. Get All Verified ratings
-     * @apiName 2
+     * @api {get} /all-verified-rating?page={page_number}&per_page={count} 3. Get All Verified ratings
+     * @apiName 3
      * @apiGroup Audio Video Reference
      * @apiSuccess {Boolean} status true
      * @apiSuccess {number} responseCode number
      * @apiSuccess {Object} body object
      * @apiSuccessExample {json} Success-200:
      * HTTP/1.1 200 OK
+     *
      * {
-     *      "status": true,
-     *      "responseCode": 200,
-     *      "body": "Review Successfully."
-     *  }
+     * "status": true,
+     * "responseCode": 200,
+     * "body": {
+     * "current_page": 1,
+     * "data": [
+     * {
+     * "id": 1,
+     * "from_user_id": 1,
+     * "email": "sachinagheara@gmail.com",
+     * "to_user_id": 2,
+     * "published": 0,
+     * "rating": "3",
+     * "audio": null,
+     * "video": "1619686360.webm",
+     * "reviwed_on": "2021-04-29 08:52:40",
+     * "url_token": "wyXjl8jghPV7lQgHr1p105skCJIj7b1GTgRpLAViRw7NngeSXBMj2AkYB6OM",
+     * "created_at": "2021-04-29T07:39:56.000000Z",
+     * "updated_at": "2021-04-29T08:52:40.000000Z",
+     * "deleted_at": null
+     * }
+     * ],
+     * "first_page_url": "http://localhost:8000/api/all-verified-rating?page=1",
+     * "from": 1,
+     * "last_page": 1,
+     * "last_page_url": "http://localhost:8000/api/all-verified-rating?page=1",
+     * "links": [
+     * {
+     * "url": null,
+     * "label": "&laquo; Previous",
+     * "active": false
+     * },
+     * {
+     * "url": "http://localhost:8000/api/all-verified-rating?page=1",
+     * "label": "1",
+     * "active": true
+     * },
+     * {
+     * "url": null,
+     * "label": "Next &raquo;",
+     * "active": false
+     * }
+     * ],
+     * "next_page_url": null,
+     * "path": "http://localhost:8000/api/all-verified-rating",
+     * "per_page": "10",
+     * "prev_page_url": null,
+     * "to": 1,
+     * "total": 1
+     * }
+     * }
      * @apiUse APIError
      * @apiErrorExample {json} Error-503:
      * Error 503: Validation Errors
@@ -201,7 +248,7 @@ class AudioVideoReferenceController extends Controller
      */
     public function allRatings(Request $request)
     {
-        $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->get();
+        $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
         if ($result) {
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
         } else {
