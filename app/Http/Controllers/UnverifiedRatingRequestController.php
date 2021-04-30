@@ -80,7 +80,7 @@ class UnverifiedRatingRequestController extends Controller
         $result = UnverifiedRatingRequest::create($params);
 
         if ($result) {
-            Mail::to($request->get('email'))->send(new UnverifiedRatingRequestMail($token, Auth::user()));
+            Mail::to($request->get('email'))->send(new UnverifiedRatingRequestMail($token, Auth::user(),$request->get('email')));
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => 'Request sent successfully'], 200);
         } else {
             return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
