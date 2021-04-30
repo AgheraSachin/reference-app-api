@@ -37,7 +37,9 @@ class User extends Authenticatable
 
     public function getProfilePicAttribute($value)
     {
-        return Storage::url('Users/' . $value);
+        if ($value != null) {
+            return Storage::url('Users/' . $value);
+        }
     }
 
 }
