@@ -317,6 +317,87 @@ define({ "api": [
     ]
   },
   {
+    "type": "get",
+    "url": "/publish-verified-rating/{id}",
+    "title": "4. Publish Given Audio/Video Reference",
+    "name": "4",
+    "group": "Audio_Video_Reference",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "body",
+            "description": "<p>object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": true,\n     \"responseCode\": 200,\n     \"body\": \"Review published Successfully\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-503:",
+          "content": "Error 503: Validation Errors\n{\n  \"success\": false,\n  \"responseCode\": 503,\n  \"body\": \"Validation Object\"\n},",
+          "type": "json"
+        },
+        {
+          "title": "Error-500:",
+          "content": "Error 500: Server Errors\n{\n  \"success\": false,\n  \"responseCode\": 500,\n  \"body\": \"Something went wrong\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/AudioVideoReferenceController.php",
+    "groupTitle": "Audio_Video_Reference",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/publish-verified-rating/{id}"
+      }
+    ]
+  },
+  {
     "type": "post",
     "url": "/accessToken",
     "title": "1. Get AccessToken",
@@ -571,6 +652,384 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "https://reference.app/api/public/api/signout"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>Content type</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Access Bearer token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n     \"Accept\": \"application/json\",\n     \"Authorization\": \"Bearer \".{{token}}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/my-conncections?page={page_number}&&per_page={per_page}",
+    "title": "1. Get Login User's Connections",
+    "name": "1",
+    "group": "Send_Verified_Reference",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "body",
+            "description": "<p>object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n\n{\n\"status\": true,\n\"responseCode\": 200,\n\"body\": {\n\"current_page\": 1,\n\"data\": [\n{\n\"id\": 1,\n\"to_user_id\": 2,\n\"rating\": \"3\",\n\"user\": {\n\"id\": 2,\n\"first_name\": \"Test2\",\n\"last_name\": \"Test2\",\n\"email\": \"test2@test.com\",\n\"profile_pic\": null,\n\"created_at\": \"2021-04-25T14:27:38.000000Z\",\n\"updated_at\": \"2021-04-25T14:27:38.000000Z\"\n}\n},\n{\n\"id\": 2,\n\"to_user_id\": 1,\n\"rating\": \"3\",\n\"user\": {\n\"id\": 1,\n\"first_name\": \"Test1\",\n\"last_name\": \"Test1\",\n\"email\": \"test1@test.com\",\n\"profile_pic\": null,\n\"created_at\": \"2021-04-25T14:27:38.000000Z\",\n\"updated_at\": \"2021-04-25T14:27:38.000000Z\"\n}\n}\n],\n\"first_page_url\": \"http://localhost:8000/api/my-conncections?page=1\",\n\"from\": 1,\n\"last_page\": 1,\n\"last_page_url\": \"http://localhost:8000/api/my-conncections?page=1\",\n\"links\": [\n{\n\"url\": null,\n\"label\": \"&laquo; Previous\",\n\"active\": false\n},\n{\n\"url\": \"http://localhost:8000/api/my-conncections?page=1\",\n\"label\": \"1\",\n\"active\": true\n},\n{\n\"url\": null,\n\"label\": \"Next &raquo;\",\n\"active\": false\n}\n],\n\"next_page_url\": null,\n\"path\": \"http://localhost:8000/api/my-conncections\",\n\"per_page\": \"2\",\n\"prev_page_url\": null,\n\"to\": 2,\n\"total\": 2\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-503:",
+          "content": "Error 503: Validation Errors\n{\n  \"success\": false,\n  \"responseCode\": 503,\n  \"body\": \"Validation Object\"\n},",
+          "type": "json"
+        },
+        {
+          "title": "Error-500:",
+          "content": "Error 500: Server Errors\n{\n  \"success\": false,\n  \"responseCode\": 500,\n  \"body\": \"Something went wrong\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/SentMyReferenceController.php",
+    "groupTitle": "Send_Verified_Reference",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/my-conncections?page={page_number}&&per_page={per_page}"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>Content type</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Access Bearer token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n     \"Accept\": \"application/json\",\n     \"Authorization\": \"Bearer \".{{token}}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/send-my-references",
+    "title": "2. Send Verified Reference",
+    "name": "2",
+    "group": "Send_Verified_Reference",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>string</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "reference",
+            "description": "<p>array</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  email:'xyz12@company.com',\n  reference[0][id] : 1,\n  reference[0][email] : 'test1@test.com',\n   reference[1][id] : 1,\n  reference[1][email] : 'test2@test.com',\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "body",
+            "description": "<p>object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n\"status\": true,\n\"responseCode\": 200,\n\"body\": \"Sent reference successfully.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-503:",
+          "content": "Error 503: Validation Errors\n{\n  \"success\": false,\n  \"responseCode\": 503,\n  \"body\": \"Validation Object\"\n},",
+          "type": "json"
+        },
+        {
+          "title": "Error-500:",
+          "content": "Error 500: Server Errors\n{\n  \"success\": false,\n  \"responseCode\": 500,\n  \"body\": \"Something went wrong\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/SentMyReferenceController.php",
+    "groupTitle": "Send_Verified_Reference",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/send-my-references"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>Content type</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Access Bearer token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n     \"Accept\": \"application/json\",\n     \"Authorization\": \"Bearer \".{{token}}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/verify-access-code",
+    "title": "2. Access Code Verify",
+    "name": "3",
+    "group": "Send_Verified_Reference",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "access_code",
+            "description": "<p>string</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "access_token",
+            "description": "<p>string</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  access_code : 35618,\n  access_token : FYEzlYKQEOR9FIto5f85OiUiUMNmgHT17aVp9Kbc8jgIB0rvLaosplHZVuti,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "body",
+            "description": "<p>object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n\"status\": true,\n\"responseCode\": 200,\n\"body\": [\n{\n\"id\": 1,\n\"from_user_id\": 1,\n\"email\": \"sachinagheara@gmail.com\",\n\"to_user_id\": 2,\n\"published\": 1,\n\"rating\": \"3\",\n\"audio\": null,\n\"video\": \"http://localhost/storage/Video/1619686360.webm\",\n\"reviwed_on\": \"2021-04-29 08:52:40\",\n\"url_token\": \"wyXjl8jghPV7lQgHr1p105skCJIj7b1GTgRpLAViRw7NngeSXBMj2AkYB6OM\",\n\"created_at\": \"2021-04-29T07:39:56.000000Z\",\n\"updated_at\": \"2021-04-29T08:52:40.000000Z\",\n\"deleted_at\": null\n}\n]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-503:",
+          "content": "Error 503: Validation Errors\n{\n  \"success\": false,\n  \"responseCode\": 503,\n  \"body\": \"Validation Object\"\n},",
+          "type": "json"
+        },
+        {
+          "title": "Error-500:",
+          "content": "Error 500: Server Errors\n{\n  \"success\": false,\n  \"responseCode\": 500,\n  \"body\": \"Something went wrong\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/SentMyReferenceController.php",
+    "groupTitle": "Send_Verified_Reference",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/verify-access-code"
       }
     ],
     "header": {

@@ -255,4 +255,52 @@ class AudioVideoReferenceController extends Controller
             return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
         }
     }
+
+    /**
+     * @api {get} /publish-verified-rating/{id} 4. Publish Given Audio/Video Reference
+     * @apiName 4
+     * @apiGroup Audio Video Reference
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "Review published Successfully"
+     *  }
+     * @apiUse APIError
+     * @apiErrorExample {json} Error-503:
+     * Error 503: Validation Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 503,
+     *   "body": "Validation Object"
+     * },
+     *
+     * @apiErrorExample {json} Error-500:
+     * Error 500: Server Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 500,
+     *   "body": "Something went wrong"
+     * }
+     */
+    public function publish($id)
+    {
+        $data['id'] = $id;
+        $validator = Validator::make($data, [
+            'id' => 'required|exists:verified_rating_requests,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
+        };
+        $result = VerifiedRatingRequest::where('id', $id)->update(['published' => 1]);
+        if ($result) {
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => 'Review published Successfully'], 200);
+        } else {
+            return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
+        }
+    }
 }
