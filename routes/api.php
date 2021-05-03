@@ -27,8 +27,14 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('request-for-audio-video-reference', [\App\Http\Controllers\AudioVideoReferenceController::class, 'makeRequestForAudioVideoReference']);
     Route::post('post-review', [\App\Http\Controllers\AudioVideoReferenceController::class, 'giveReviewAudioVideo']);
+    Route::get('publish-verified-rating/{id}', [\App\Http\Controllers\AudioVideoReferenceController::class, 'publish']);
     Route::get('all-verified-rating', [\App\Http\Controllers\AudioVideoReferenceController::class, 'allRatings']);
 
 
     Route::get('signout', [\App\Http\Controllers\AuthController::class, 'signout']);
+
+    //sent-my-reference-video
+    Route::get('my-conncections', [\App\Http\Controllers\SentMyReferenceController::class, 'connections']);
+    Route::post('send-my-references', [\App\Http\Controllers\SentMyReferenceController::class, 'sendReference']);
+    Route::post('verify-access-code', [\App\Http\Controllers\SentMyReferenceController::class, 'verifyAccessCode']);
 });
