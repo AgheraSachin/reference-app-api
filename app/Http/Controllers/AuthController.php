@@ -243,11 +243,16 @@ class AuthController extends Controller
         ];
         $profilePicJsonData = Http::get('https://api.linkedin.com/v2/me', rawurldecode(http_build_query($profileParams)));
         if ($profilePicJsonData->successful()) {
-            $profilepic = $profilePicJsonData->json()['profilePicture']['displayImage~']['elements'][2]['identifiers'][0]['identifier'];
-            $content = file_get_contents($profilepic);
-            $filename = time() . '.jpeg';
-            Storage::put('Users/' . $filename, (string)$content, 'public');
-            $request->request->add(['profile_pic' => $filename]);
+            if(isset($profilePicJsonData->json()['profilePicture'])){
+                $profilepic = $profilePicJsonData->json()['profilePicture']['displayImage~']['elements'][2]['identifiers'][0]['identifier'];
+                $content = file_get_contents($profilepic);
+                $filename = time() . '.jpeg';
+                Storage::put('Users/' . $filename, (string)$content, 'public');
+                $request->request->add(['profile_pic' => $filename]);
+            }else{
+                $request->request->add(['profile_pic' => null]);
+            }
+
         }
         $profile_pic = $request->input('profile_pic');
         $data = [

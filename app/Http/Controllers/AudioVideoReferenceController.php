@@ -6,6 +6,7 @@ use App\Jobs\uploadAudioVideoFilesJob;
 use App\Mail\UnverifiedRatingRequestMail;
 use App\Mail\VerifiedRatingRequestMail;
 use App\Models\UnverifiedRatingRequest;
+use App\Models\User;
 use App\Models\VerifiedRatingRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -197,7 +198,8 @@ class AudioVideoReferenceController extends Controller
      * "url_token": "wyXjl8jghPV7lQgHr1p105skCJIj7b1GTgRpLAViRw7NngeSXBMj2AkYB6OM",
      * "created_at": "2021-04-29T07:39:56.000000Z",
      * "updated_at": "2021-04-29T08:52:40.000000Z",
-     * "deleted_at": null
+     * "deleted_at": null,
+     * "img":"https://dsdad/adad/ts.png"
      * }
      * ],
      * "first_page_url": "http://localhost:8000/api/all-verified-rating?page=1",
@@ -249,6 +251,12 @@ class AudioVideoReferenceController extends Controller
     public function allRatings(Request $request)
     {
         $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
+        foreach ($result->items() as $key => $val) {
+            if (isset($val['to_user_id'])) {
+                $pic = User::where('id', $val['to_user_id'])->pluck('profile_pic');
+                $result->items()[$key]['img'] = $pic[0];
+            }
+        }
         if ($result) {
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
         } else {
