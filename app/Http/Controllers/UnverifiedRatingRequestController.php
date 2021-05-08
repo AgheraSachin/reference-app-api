@@ -420,7 +420,8 @@ class UnverifiedRatingRequestController extends Controller
      * "per_page": "10",
      * "prev_page_url": null,
      * "to": 10,
-     * "total": 16
+     * "total": 16,
+     * "average": 4.75
      * }
      * }
      * @apiUse APIError
@@ -443,8 +444,12 @@ class UnverifiedRatingRequestController extends Controller
     public function allRatings(Request $request)
     {
         $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
+        $average = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->avg('rating');
+        $custom = collect(['average' => $average]);
+        $data = $custom->merge($result);
+
         if ($result) {
-            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $data], 200);
         } else {
             return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
         }
