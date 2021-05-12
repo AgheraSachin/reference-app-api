@@ -254,7 +254,11 @@ class AudioVideoReferenceController extends Controller
         foreach ($result->items() as $key => $val) {
             if (isset($val['to_user_id'])) {
                 $pic = User::where('id', $val['to_user_id'])->pluck('profile_pic');
-                $result->items()[$key]['img'] = $pic[0];
+                if ($pic[0] != null) {
+                    $result->items()[$key]['profile_pic'] = Storage::url('Users/' . $pic[0]);
+                } else {
+                    $result->items()[$key]['profile_pic'] = $pic[0];
+                }
             }
         }
         if ($result) {
