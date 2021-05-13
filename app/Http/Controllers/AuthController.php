@@ -169,7 +169,7 @@ class AuthController extends Controller
             'client_secret' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()],200);
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
         }
 
         $response = Http::asForm()->post('https://www.linkedin.com/oauth/v2/accessToken', [
@@ -183,7 +183,7 @@ class AuthController extends Controller
             $accessToken = $response->json()['access_token'];
             return $this->getUserDetailsfromLinkedIn($accessToken, $request);
         } else {
-            return response()->json(['status' => false,'responseCode' => 404, 'body' => 'Internal Server Error'], 200);
+            return response()->json(['status' => false, 'responseCode' => 404, 'body' => 'Internal Server Error'], 200);
         }
     }
 
@@ -243,13 +243,13 @@ class AuthController extends Controller
         ];
         $profilePicJsonData = Http::get('https://api.linkedin.com/v2/me', rawurldecode(http_build_query($profileParams)));
         if ($profilePicJsonData->successful()) {
-            if(isset($profilePicJsonData->json()['profilePicture'])){
+            if (isset($profilePicJsonData->json()['profilePicture'])) {
                 $profilepic = $profilePicJsonData->json()['profilePicture']['displayImage~']['elements'][2]['identifiers'][0]['identifier'];
                 $content = file_get_contents($profilepic);
                 $filename = time() . '.jpeg';
                 Storage::put('Users/' . $filename, (string)$content, 'public');
                 $request->request->add(['profile_pic' => $filename]);
-            }else{
+            } else {
                 $request->request->add(['profile_pic' => null]);
             }
 
@@ -265,7 +265,7 @@ class AuthController extends Controller
 
         $result = User::create($data);
 
-        Mail::to($request->get('email'))->send(new RegisterPasswordMail($request->input('first_name'),$request->input('last_name'),$password));
+        Mail::to($request->get('email'))->send(new RegisterPasswordMail($request->input('first_name'), $request->input('last_name'), $password));
         if ($result) {
             if (!Auth::attempt(['email' => $request->get('email'), 'password' => $password])) {
                 return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 200);
@@ -347,7 +347,7 @@ class AuthController extends Controller
             return response()->json(['status' => false, 'responseCode' => 503, 'body' => 'No User found.']);
         }
         if (!Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
-            return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'],200);
+            return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 200);
         }
         $user = $request->user();
         $data['token'] = $user->createToken('linkedin')->accessToken;
@@ -376,5 +376,46 @@ class AuthController extends Controller
         $user = Auth::user()->token();
         $user->revoke();
         return response()->json(['status' => true, 'responseCode' => 200, 'body' => "logout successfully"], 200);
+    }
+
+    /**
+     * @api {post} /change-password 4. Change the user's password
+     * @apiName 4
+     * @apiUse APIHeader2
+     * @apiGroup Login
+     * @apiParamExample {json} Request-Example:
+     * {
+     *   password:'xyz',
+     *   password_confirmation : "xyz",
+     * }
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "Password Changed successfully"
+     *  }
+     */
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|confirmed'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()]);
+        }
+
+        $user_id = Auth::user()->id;
+
+        $resullt = User::where('id', $user_id)->update(['password' => bcrypt($request->get('password'))]);
+
+        if ($resullt) {
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => "Password Changed successfully"], 200);
+        } else {
+            return response()->json(['status' => false, 'responseCode' => 500, 'body' => "something went wrong"], 500);
+        }
     }
 }
