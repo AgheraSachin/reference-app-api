@@ -30,8 +30,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('publish-verified-rating/{id}', [\App\Http\Controllers\AudioVideoReferenceController::class, 'publish']);
     Route::get('all-verified-rating', [\App\Http\Controllers\AudioVideoReferenceController::class, 'allRatings']);
 
-
+    //User
     Route::get('signout', [\App\Http\Controllers\AuthController::class, 'signout']);
+    Route::post('change-password', [\App\Http\Controllers\AuthController::class, 'changePassword']);
 
     //sent-my-reference-video
     Route::get('my-conncections', [\App\Http\Controllers\SentMyReferenceController::class, 'connections']);
