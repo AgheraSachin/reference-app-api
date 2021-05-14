@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //User
     Route::get('signout', [\App\Http\Controllers\AuthController::class, 'signout']);
     Route::post('change-password', [\App\Http\Controllers\AuthController::class, 'changePassword']);
+    Route::post('report-bug', [\App\Http\Controllers\ReportBugController::class, 'submit']);
 
     //sent-my-reference-video
     Route::get('my-conncections', [\App\Http\Controllers\SentMyReferenceController::class, 'connections']);
