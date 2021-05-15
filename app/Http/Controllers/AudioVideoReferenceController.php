@@ -248,16 +248,20 @@ class AudioVideoReferenceController extends Controller
      *   "body": "Something went wrong"
      * }
      */
-    public function allRatings(Request $request)
+    public function allRatings($filter = null, Request $request)
     {
-        $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
+        if ($filter == 'unpublished') {
+            $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->paginate($request->get('per_page'));
+        } else {
+            $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
+        }
         foreach ($result->items() as $key => $val) {
             if (isset($val['to_user_id'])) {
                 $pic = User::where('id', $val['to_user_id'])->pluck('profile_pic');
                 if ($pic[0] != null) {
-                    $result->items()[$key]['profile_pic'] = Storage::url('Users/' . $pic[0]);
-                } else {
                     $result->items()[$key]['profile_pic'] = $pic[0];
+                } else {
+                    $result->items()[$key]['profile_pic'] = null;
                 }
             }
         }
