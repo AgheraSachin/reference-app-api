@@ -32,6 +32,6 @@ class SendVerifiedReferenceMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.send-verified-reference-mail', ['access_code' => $this->access_code, 'token' => $this->token]);
+        return $this->view('mail.send-verified-reference-mail', ['access_code' => $this->access_code, 'token' => $this->token, 'user' => $this->user]);
     }
 }
