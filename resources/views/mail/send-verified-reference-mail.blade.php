@@ -35,7 +35,7 @@
             <p style="font-size: 20px; color: #4A5566; margin-bottom: 10px;">Hi there! 👋 <br><b>{{$user['first_name']}} {{$user['last_name']}}</b> would like to share his verified work references with your organization. Please click the sercure link below to review Hamed’s references in video and audio formats.</p>
             <p style="font-size: 20px; color: #4A5566; margin-bottom: 20px;">Have a wonderful day!</p>
             <p style="margin-bottom: 20px;color: #1C222C; font-weight: 700">Access Code: <b>{{$access_code}}</b></p>
-            <a href="https://reference.app/access-reference/{{$token}}" target="_blank" style="max-width: 290px;width: 100%;display: block;color: #fff;height: 56px;background: #0052E2;border-radius: 6px;font-weight: bold;text-align: center;vertical-align: middle;text-decoration: none;line-height: 56px">Access References</a>
+            <a href="https://reference.app/access-reference?token={{$token}}" target="_blank" style="max-width: 290px;width: 100%;display: block;color: #fff;height: 56px;background: #0052E2;border-radius: 6px;font-weight: bold;text-align: center;vertical-align: middle;text-decoration: none;line-height: 56px">Access References</a>
         </td>
         <td></td>
     </tr>
