@@ -18,6 +18,7 @@ Route::post('accessToken', [\App\Http\Controllers\AuthController::class, 'access
 Route::post('signup', [\App\Http\Controllers\AuthController::class, 'signup']);
 Route::post('signin', [\App\Http\Controllers\AuthController::class, 'signin']);
 Route::post('request-for-unverified-rating-review', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'review']);
+Route::post('verify-access-code', [\App\Http\Controllers\SentMyReferenceController::class, 'verifyAccessCode']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('request-for-unverified-rating', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'makeRequest']);
@@ -38,5 +39,4 @@ Route::group(['middleware' => 'auth:api'], function () {
     //sent-my-reference-video
     Route::get('my-conncections', [\App\Http\Controllers\SentMyReferenceController::class, 'connections']);
     Route::post('send-my-references', [\App\Http\Controllers\SentMyReferenceController::class, 'sendReference']);
-    Route::post('verify-access-code', [\App\Http\Controllers\SentMyReferenceController::class, 'verifyAccessCode']);
 });
