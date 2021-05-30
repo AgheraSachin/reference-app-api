@@ -260,6 +260,9 @@ class SentMyReferenceController extends Controller
                 } else {
                     $video_data['video'] = $video_data['video'];
                 }
+                if(isset($video_data['user']['profile_pic'])){
+                    $body['profile_pic']=$video_data['user']['profile_pic'];
+                }
                 $body[] = $video_data;
             }
 
