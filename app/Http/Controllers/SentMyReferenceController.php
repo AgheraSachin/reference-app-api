@@ -254,7 +254,7 @@ class SentMyReferenceController extends Controller
             $send_videos = SendVerifiedReference::where(['access_code' => $request->get('access_code'), 'access_token' => $request->get('access_token')])->select('reference_id')->get();
             $body = [];
             foreach ($send_videos as $key => $val) {
-                $video_data = VerifiedRatingRequest::where('id', $val['reference_id'])->first()->toArray();
+                $video_data = VerifiedRatingRequest::with('user')->where('id', $val['reference_id'])->first()->toArray();
                 if ($video_data['audio'] != null) {
                     $video_data['audio'] =  $video_data['audio'];
                 } else {
