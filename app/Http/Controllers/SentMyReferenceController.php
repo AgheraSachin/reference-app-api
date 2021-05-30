@@ -260,10 +260,10 @@ class SentMyReferenceController extends Controller
                 } else {
                     $video_data['video'] = $video_data['video'];
                 }
+                $body[] = $video_data;
                 if(isset($video_data['user']['profile_pic'])){
                     $body['profile_pic']=$video_data['user']['profile_pic'];
                 }
-                $body[] = $video_data;
             }
 
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => $body], 200);
