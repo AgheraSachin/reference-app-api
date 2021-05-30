@@ -256,9 +256,9 @@ class SentMyReferenceController extends Controller
             foreach ($send_videos as $key => $val) {
                 $video_data = VerifiedRatingRequest::where('id', $val['reference_id'])->first()->toArray();
                 if ($video_data['audio'] != null) {
-                    $video_data['audio'] = Storage::url('Audio/' . $video_data['audio']);
+                    $video_data['audio'] =  $video_data['audio'];
                 } else {
-                    $video_data['video'] = Storage::url('Video/' . $video_data['video']);
+                    $video_data['video'] = $video_data['video'];
                 }
                 $body[] = $video_data;
             }
