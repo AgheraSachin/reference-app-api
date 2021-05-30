@@ -443,11 +443,12 @@ class UnverifiedRatingRequestController extends Controller
      */
     public function allRatings($filter = null, Request $request)
     {
-        if ($filter == 'unpublished') {
-            $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->paginate($request->get('per_page'));
-        } else {
-            $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
-        }
+//        if ($filter == 'unpublished') {
+//            $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->paginate($request->get('per_page'));
+//        } else {
+//            $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
+//        }
+        $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
         $average = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->avg('rating');
         $custom = collect(['average' => $average]);
         $data = $custom->merge($result);
