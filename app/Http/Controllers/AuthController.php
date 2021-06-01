@@ -418,4 +418,27 @@ class AuthController extends Controller
             return response()->json(['status' => false, 'responseCode' => 500, 'body' => "something went wrong"], 500);
         }
     }
+
+    /**
+     * @api {get} /delete-account 5. Delete User Account
+     * @apiName 5
+     * @apiUse APIHeader2
+     * @apiGroup Login
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "Delete Account Successfully"
+     *  }
+     */
+    public function delete(Request $request)
+    {
+        $id = Auth::user()->id;
+        $user = User::find($id);
+        $user->delete();
+        return response()->json(['status' => true, 'responseCode' => 200, 'body' => "Delete Account Successfully"], 200);
+    }
 }
