@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\UnverifiedRatingRequestMail;
 use App\Models\UnverifiedRatingRequest;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -458,5 +459,27 @@ class UnverifiedRatingRequestController extends Controller
         } else {
             return response()->json(['status' => false, 'responseCode' => 500, 'body' => 'Something went wrong'], 200);
         }
+    }
+
+    /**
+     * @api {get} /delete-unverified-rating/{id} 5. Delete reference
+     * @apiName 5
+     * @apiUse APIHeader2
+     * @apiGroup Unverified Rating
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "Delete Successfully"
+     *  }
+     */
+    public function delete($id)
+    {
+        $data = UnverifiedRatingRequest::find($id);
+        $data->delete();
+        return response()->json(['status' => true, 'responseCode' => 200, 'body' => "Delete Successfully"], 200);
     }
 }

@@ -398,6 +398,75 @@ define({ "api": [
     ]
   },
   {
+    "type": "get",
+    "url": "/delete-unverified-rating/{id}",
+    "title": "5. Delete reference",
+    "name": "5",
+    "group": "Audio_Video_Reference",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": true,\n     \"responseCode\": 200,\n     \"body\": \"Delete Successfully\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/AudioVideoReferenceController.php",
+    "groupTitle": "Audio_Video_Reference",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/delete-unverified-rating/{id}"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>Content type</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Access Bearer token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n     \"Accept\": \"application/json\",\n     \"Authorization\": \"Bearer \".{{token}}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "post",
     "url": "/accessToken",
     "title": "1. Get AccessToken",
@@ -1746,5 +1815,74 @@ define({ "api": [
         "url": "https://reference.app/api/public/api/all-unverified-rating?page={page_number}&per_page={count}"
       }
     ]
+  },
+  {
+    "type": "get",
+    "url": "/delete-unverified-rating/{id}",
+    "title": "5. Delete reference",
+    "name": "5",
+    "group": "Unverified_Rating",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": true,\n     \"responseCode\": 200,\n     \"body\": \"Delete Successfully\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/UnverifiedRatingRequestController.php",
+    "groupTitle": "Unverified_Rating",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/delete-unverified-rating/{id}"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>Content type</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Access Bearer token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n     \"Accept\": \"application/json\",\n     \"Authorization\": \"Bearer \".{{token}}\n}",
+          "type": "json"
+        }
+      ]
+    }
   }
 ] });
