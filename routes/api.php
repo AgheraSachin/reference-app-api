@@ -24,12 +24,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('request-for-unverified-rating', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'makeRequest']);
     Route::get('publish-unverified-rating/{id}', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'publish']);
     Route::get('all-unverified-rating/{filter?}', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'allRatings']);
+    Route::get('delete-unverified-rating/{id}', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'delete']);
 
 
     Route::post('request-for-audio-video-reference', [\App\Http\Controllers\AudioVideoReferenceController::class, 'makeRequestForAudioVideoReference']);
     Route::post('post-review', [\App\Http\Controllers\AudioVideoReferenceController::class, 'giveReviewAudioVideo']);
     Route::get('publish-verified-rating/{id}', [\App\Http\Controllers\AudioVideoReferenceController::class, 'publish']);
     Route::get('all-verified-rating/{filter?}', [\App\Http\Controllers\AudioVideoReferenceController::class, 'allRatings']);
+    Route::get('delete-verified-rating/{id}', [\App\Http\Controllers\AudioVideoReferenceController::class, 'delete']);
 
     //User
     Route::get('signout', [\App\Http\Controllers\AuthController::class, 'signout']);
