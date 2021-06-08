@@ -1279,7 +1279,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/verify-access-code",
-    "title": "2. Access Code Verify",
+    "title": "3. Access Code Verify",
     "name": "3",
     "group": "Send_Verified_Reference",
     "parameter": {
@@ -1414,8 +1414,8 @@ define({ "api": [
   {
     "type": "post",
     "url": "/send-notification",
-    "title": "3. Send Notification",
-    "name": "3",
+    "title": "4. Send Notification",
+    "name": "4",
     "group": "Send_Verified_Reference",
     "parameter": {
       "fields": {
@@ -1556,8 +1556,8 @@ define({ "api": [
   {
     "type": "get",
     "url": "/get-my-notification",
-    "title": "4. Get Notifications",
-    "name": "3",
+    "title": "5. Get Notifications",
+    "name": "5",
     "group": "Send_Verified_Reference",
     "success": {
       "fields": {
