@@ -188,7 +188,7 @@ class SentMyReferenceController extends Controller
     }
 
     /**
-     * @api {post} /verify-access-code 2. Access Code Verify
+     * @api {post} /verify-access-code 3. Access Code Verify
      * @apiName 3
      * @apiGroup Send Verified Reference
      * @apiUse APIHeader2
@@ -275,8 +275,8 @@ class SentMyReferenceController extends Controller
     }
 
     /**
-     * @api {post} /send-notification 3. Send Notification
-     * @apiName 3
+     * @api {post} /send-notification 4. Send Notification
+     * @apiName 4
      * @apiGroup Send Verified Reference
      * @apiUse APIHeader2
      * @apiParam {string} email string
@@ -336,8 +336,8 @@ class SentMyReferenceController extends Controller
     }
 
     /**
-     * @api {get} /get-my-notification 4. Get Notifications
-     * @apiName 3
+     * @api {get} /get-my-notification 5. Get Notifications
+     * @apiName 5
      * @apiGroup Send Verified Reference
      * @apiUse APIHeader2
      * @apiSuccess {Boolean} status true
