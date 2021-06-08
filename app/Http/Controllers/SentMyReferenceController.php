@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendVerifiedReferenceMail;
+use App\Models\Notification;
 use App\Models\SendVerifiedReference;
 use App\Models\UnverifiedRatingRequest;
 use App\Models\User;
@@ -251,24 +252,134 @@ class SentMyReferenceController extends Controller
             return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
         };
         if (SendVerifiedReference::where(['access_code' => $request->get('access_code'), 'access_token' => $request->get('access_token')])->exists()) {
-            $send_videos = SendVerifiedReference::where(['access_code' => $request->get('access_code'), 'access_token' => $request->get('access_token')])->select('reference_id')->get();
+            $send_videos = SendVerifiedReference::where(['access_code' => $request->get('access_code'), 'access_token' => $request->get('access_token')])->get();
             $body = [];
             foreach ($send_videos as $key => $val) {
                 $video_data = VerifiedRatingRequest::with('user')->where('id', $val['reference_id'])->first()->toArray();
                 if ($video_data['audio'] != null) {
-                    $video_data['audio'] =  $video_data['audio'];
+                    $video_data['audio'] = $video_data['audio'];
                 } else {
                     $video_data['video'] = $video_data['video'];
                 }
                 $body[] = $video_data;
-                if(isset($video_data['user']['profile_pic'])){
-                    $body[$key]['profile_pic']=$video_data['user']['profile_pic'];
+                if (isset($video_data['user']['profile_pic'])) {
+                    $body[$key]['profile_pic'] = $video_data['user']['profile_pic'];
                 }
+                $body[$key]['email_to'] = $val['email'];
             }
 
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => $body], 200);
         } else {
             return response()->json(['status' => false, 'responseCode' => 503, 'body' => "No Such Access code or token found."], 200);
         }
+    }
+
+    /**
+     * @api {post} /send-notification 3. Send Notification
+     * @apiName 3
+     * @apiGroup Send Verified Reference
+     * @apiUse APIHeader2
+     * @apiParam {string} email string
+     * @apiParam {number} from_user_id number
+     * @apiParam {array} to_user_id array
+     * @apiParamExample {json} Request-Example:
+     * {
+     *   email:'xyz12@company.com',
+     *   from_user_id :1,
+     *   to_user_id[0]:2,
+     *   to_user_id[1]:3
+     * }
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     *{
+     *  "status": true,
+     * "responseCode": 200,
+     * "body": "Notification send successfully"
+     * }
+     * @apiUse APIError
+     * @apiErrorExample {json} Error-503:
+     * Error 503: Validation Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 503,
+     *   "body": "Validation Object"
+     * },
+     *
+     * @apiErrorExample {json} Error-500:
+     * Error 500: Server Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 500,
+     *   "body": "Something went wrong"
+     * }
+     */
+    public function sendNotification(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'to_user_id' => 'required',
+            'from_user_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'responseCode' => 503, 'body' => $validator->errors()], 200);
+        };
+
+        foreach ($request->get('to_user_id') as $key => $val) {
+            $user = User::find($request->get('from_user_id'))->get();
+
+            Notification::create(['to_user_id' => $val, 'notification' => '<b>' . $request->get('email') . '</b> has ask you to setup a personal call with your reference <b>' . $user[0]->first_name . ' ' . $user[0]->last_name . "</b>.Don't forgot to organize this call as soon as possible"]);
+        }
+        return response()->json(['status' => true, 'responseCode' => 200, 'body' => "Notification send successfully"], 200);
+    }
+
+    /**
+     * @api {get} /get-my-notification 4. Get Notifications
+     * @apiName 3
+     * @apiGroup Send Verified Reference
+     * @apiUse APIHeader2
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccess {Object} body object
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     *{
+     * "status": true,
+     * "responseCode": 200,
+     * "body": [
+     * {
+     * "id": 1,
+     * "to_user_id": 2,
+     * "notification": "<b>xyz12@company.com</b> has ask you to setup a personal call with your reference <b>Test1 Test1</b>.Don't forgot to organize this call as soon as possible",
+     * "is_read": 0,
+     * "created_at": "2021-06-07T12:10:21.000000Z",
+     * "updated_at": "2021-06-07T12:10:21.000000Z",
+     * "deleted_at": null
+     * }
+     * ]
+     * }
+     * @apiUse APIError
+     * @apiErrorExample {json} Error-503:
+     * Error 503: Validation Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 503,
+     *   "body": "Validation Object"
+     * },
+     *
+     * @apiErrorExample {json} Error-500:
+     * Error 500: Server Errors
+     * {
+     *   "success": false,
+     *   "responseCode": 500,
+     *   "body": "Something went wrong"
+     * }
+     */
+    public function getNotification()
+    {
+        $result = Notification::where('to_user_id', Auth::user()->id)->get();
+        return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
     }
 }
