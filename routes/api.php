@@ -19,6 +19,7 @@ Route::post('signup', [\App\Http\Controllers\AuthController::class, 'signup']);
 Route::post('signin', [\App\Http\Controllers\AuthController::class, 'signin']);
 Route::post('request-for-unverified-rating-review', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'review']);
 Route::post('verify-access-code', [\App\Http\Controllers\SentMyReferenceController::class, 'verifyAccessCode']);
+Route::post('send-notification', [\App\Http\Controllers\SentMyReferenceController::class, 'sendNotification']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('request-for-unverified-rating', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'makeRequest']);
@@ -38,6 +39,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('change-password', [\App\Http\Controllers\AuthController::class, 'changePassword']);
     Route::post('report-bug', [\App\Http\Controllers\ReportBugController::class, 'submit']);
     Route::get('delete-account', [\App\Http\Controllers\AuthController::class, 'delete']);
+    Route::get('get-my-notification', [\App\Http\Controllers\SentMyReferenceController::class, 'getNotification']);
 
     //sent-my-reference-video
     Route::get('my-conncections', [\App\Http\Controllers\SentMyReferenceController::class, 'connections']);
