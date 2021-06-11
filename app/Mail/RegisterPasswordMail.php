@@ -14,17 +14,19 @@ class RegisterPasswordMail extends Mailable
     public $password;
     public $first_name;
     public $last_name;
+    public $email;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($first_name, $last_name, $password)
+    public function __construct($first_name, $last_name, $password, $email)
     {
         $this->password = $password;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
+        $this->email = $email;
     }
 
     /**
@@ -34,6 +36,6 @@ class RegisterPasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.register-password-mail')->with(['password' => $this->password, 'first_name' => $this->first_name, 'last_name' => $this->last_name]);
+        return $this->view('mail.register-password-mail')->subject('Reference App Registration')->with(['password' => $this->password, 'first_name' => $this->first_name, 'last_name' => $this->last_name, 'email' => $this->email]);
     }
 }

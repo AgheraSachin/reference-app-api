@@ -183,6 +183,7 @@ class AudioVideoReferenceController extends Controller
      * "status": true,
      * "responseCode": 200,
      * "body": {
+     * "unpublish_count": 1,
      * "current_page": 1,
      * "data": [
      * {
@@ -255,7 +256,10 @@ class AudioVideoReferenceController extends Controller
         } else {
             $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
         }
+
+        $unpublish_count = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->count();
 //        $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
+
         foreach ($result->items() as $key => $val) {
             if (isset($val['to_user_id'])) {
                 $pic = User::where('id', $val['to_user_id'])->pluck('profile_pic');
@@ -266,6 +270,8 @@ class AudioVideoReferenceController extends Controller
                 }
             }
         }
+        $custom = collect(['unpublish_count' => $unpublish_count == null ? 0 : $unpublish_count]);
+        $result = $custom->merge($result);
         if ($result) {
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
         } else {

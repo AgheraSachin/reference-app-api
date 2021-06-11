@@ -221,7 +221,17 @@ class SentMyReferenceController extends Controller
      * "url_token": "wyXjl8jghPV7lQgHr1p105skCJIj7b1GTgRpLAViRw7NngeSXBMj2AkYB6OM",
      * "created_at": "2021-04-29T07:39:56.000000Z",
      * "updated_at": "2021-04-29T08:52:40.000000Z",
-     * "deleted_at": null
+     * "deleted_at": null,
+     * "user": {
+     * "id": 2,
+     * "first_name": "Test2",
+     * "last_name": "Test2",
+     * "email": "test2@test.com",
+     * "profile_pic": null,
+     * "created_at": "2021-04-25T14:27:38.000000Z",
+     * "updated_at": "2021-04-25T14:27:38.000000Z"
+     * },
+     * "email_to": "xyz12@company.com"
      * }
      * ]
      * }
@@ -348,7 +358,11 @@ class SentMyReferenceController extends Controller
      *{
      * "status": true,
      * "responseCode": 200,
-     * "body": [
+     * {
+     * "status": true,
+     * "responseCode": 200,
+     * "body": {
+     * "data": [
      * {
      * "id": 1,
      * "to_user_id": 2,
@@ -357,8 +371,19 @@ class SentMyReferenceController extends Controller
      * "created_at": "2021-06-07T12:10:21.000000Z",
      * "updated_at": "2021-06-07T12:10:21.000000Z",
      * "deleted_at": null
+     * },
+     * {
+     * "id": 3,
+     * "to_user_id": 2,
+     * "notification": "<b>xyz12@company.com</b> has ask you to setup a personal call with your reference <b>Test1 Test1</b>.Don't forgot to organize this call as soon as possible",
+     * "is_read": 0,
+     * "created_at": "2021-06-08T05:29:24.000000Z",
+     * "updated_at": "2021-06-08T05:29:24.000000Z",
+     * "deleted_at": null
      * }
-     * ]
+     * ],
+     * "total": 2
+     * }
      * }
      * @apiUse APIError
      * @apiErrorExample {json} Error-503:
@@ -380,6 +405,8 @@ class SentMyReferenceController extends Controller
     public function getNotification()
     {
         $result = Notification::where('to_user_id', Auth::user()->id)->get();
-        return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
+        $body['data'] = $result;
+        $body['total'] = count($result);
+        return response()->json(['status' => true, 'responseCode' => 200, 'body' => $body], 200);
     }
 }
