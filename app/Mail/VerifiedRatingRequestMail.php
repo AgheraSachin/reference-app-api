@@ -32,6 +32,6 @@ class VerifiedRatingRequestMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.verified-rating-request-mail', ['token' => $this->token, 'user' => $this->user, 'sent_to_email' => $this->sent_to_mail]);
+        return $this->subject('Verified Rating Request')->view('mail.verified-rating-request-mail', ['token' => $this->token, 'user' => $this->user, 'sent_to_email' => $this->sent_to_mail]);
     }
 }

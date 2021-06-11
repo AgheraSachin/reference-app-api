@@ -32,6 +32,6 @@ class UnverifiedRatingRequestMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.unverified-rating-request')->with(['token' => $this->token, 'user' => $this->user, 'sent_to_email' => $this->sent_to_email]);
+        return $this->view('mail.unverified-rating-request')->subject('Rating Request')->with(['token' => $this->token, 'user' => $this->user, 'sent_to_email' => $this->sent_to_email]);
     }
 }

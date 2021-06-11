@@ -217,6 +217,7 @@ class UnverifiedRatingRequestController extends Controller
      * "status": true,
      * "responseCode": 200,
      * "body": {
+     * "unpublish_count": 1,
      * "current_page": 1,
      * "data": [
      * {
@@ -449,9 +450,9 @@ class UnverifiedRatingRequestController extends Controller
         } else {
             $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
         }
-//        $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
+        $unpublish_count = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->count();
         $average = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->avg('rating');
-        $custom = collect(['average' => $average]);
+        $custom = collect(['average' => $average == null ? 0 : $average, 'unpublish_count' => $unpublish_count == null ? 0 : $unpublish_count]);
         $data = $custom->merge($result);
 
         if ($result) {

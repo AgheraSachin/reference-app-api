@@ -32,7 +32,8 @@
         <td>
             <a href="https://reference.app" target="_blank"><img src="{{asset('img/logo.svg')}}" alt=""></a>
             <div style="height: 20px"></div>
-            <p style="font-size: 20px; color: #4A5566; margin-bottom: 10px;">Welcome {{$first_name}} {{$last_name}} 👋 <br>Thanks for signing up! We’re thrilled to have you on board.</p>
+            <p style="font-size: 20px; color: #4A5566; margin-bottom: 10px;">Welcome {{$first_name}} {{$last_name}} 👋 <br>Thanks for signing up! We hope you enjoy using the Reference App.</p>
+            <p>You can use your email address {{$email}} with the password below to login to your account. Or you can always choose to login via LinkedIn to access your account.</p>
             <p style="margin-bottom: 20px;color: #1C222C">Password: <b>{{$password}}</b></p>
             <a href="https://reference.app/auth/login" target="_blank" style="max-width: 290px;width: 100%;display: block;color: #fff;height: 56px;background: #0052E2;border-radius: 6px;font-weight: bold;text-align: center;vertical-align: middle;text-decoration: none;line-height: 56px">Sign in to your account</a>
             <div style="height: 20px"></div>

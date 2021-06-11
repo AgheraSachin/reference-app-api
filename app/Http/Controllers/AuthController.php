@@ -265,7 +265,7 @@ class AuthController extends Controller
 
         $result = User::create($data);
 
-        Mail::to($request->get('email'))->send(new RegisterPasswordMail($request->input('first_name'), $request->input('last_name'), $password));
+        Mail::to($request->get('email'))->send(new RegisterPasswordMail($request->input('first_name'), $request->input('last_name'), $password, $request->get('email')));
         if ($result) {
             if (!Auth::attempt(['email' => $request->get('email'), 'password' => $password])) {
                 return response()->json(['status' => false, 'responseCode' => 401, 'body' => 'Unauthorized'], 200);
