@@ -205,7 +205,7 @@ class UnverifiedRatingRequestController extends Controller
     }
 
     /**
-     * @api {get} /all-unverified-rating?page={page_number}&per_page={count} 4. Get All Given Rating
+     * @api {get} /all-unverified-rating/{$type}?page={page_number}&per_page={count} 4. Get All Given Rating
      * @apiName 4
      * @apiGroup Unverified Rating
      * @apiSuccess {Boolean} status true
@@ -444,12 +444,12 @@ class UnverifiedRatingRequestController extends Controller
      */
     public function allRatings($filter = null, Request $request)
     {
-//        if ($filter == 'unpublished') {
-//            $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->paginate($request->get('per_page'));
-//        } else {
-//            $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
-//        }
-        $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
+        if ($filter == 'unpublished') {
+            $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->paginate($request->get('per_page'));
+        } else {
+            $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
+        }
+//        $result = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
         $average = UnverifiedRatingRequest::where('from_user_id', Auth::user()->id)->avg('rating');
         $custom = collect(['average' => $average]);
         $data = $custom->merge($result);

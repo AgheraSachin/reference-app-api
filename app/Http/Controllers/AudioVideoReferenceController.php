@@ -170,7 +170,7 @@ class AudioVideoReferenceController extends Controller
     }
 
     /**
-     * @api {get} /all-verified-rating?page={page_number}&per_page={count} 3. Get All Verified ratings
+     * @api {get} /all-verified-rating/{$type}?page={page_number}&per_page={count} 3. Get All Verified ratings
      * @apiName 3
      * @apiGroup Audio Video Reference
      * @apiSuccess {Boolean} status true
@@ -250,12 +250,12 @@ class AudioVideoReferenceController extends Controller
      */
     public function allRatings($filter = null, Request $request)
     {
-//        if ($filter == 'unpublished') {
-//            $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->paginate($request->get('per_page'));
-//        } else {
-//            $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
-//        }
-        $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
+        if ($filter == 'unpublished') {
+            $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->paginate($request->get('per_page'));
+        } else {
+            $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
+        }
+//        $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->paginate($request->get('per_page'));
         foreach ($result->items() as $key => $val) {
             if (isset($val['to_user_id'])) {
                 $pic = User::where('id', $val['to_user_id'])->pluck('profile_pic');

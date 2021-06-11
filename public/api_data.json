@@ -237,7 +237,7 @@
   },
   {
     "type": "get",
-    "url": "/all-verified-rating?page={page_number}&per_page={count}",
+    "url": "/all-verified-rating/{$type}?page={page_number}&per_page={count}",
     "title": "3. Get All Verified ratings",
     "name": "3",
     "group": "Audio_Video_Reference",
@@ -312,7 +312,7 @@
     "groupTitle": "Audio_Video_Reference",
     "sampleRequest": [
       {
-        "url": "https://reference.app/api/public/api/all-verified-rating?page={page_number}&per_page={count}"
+        "url": "https://reference.app/api/public/api/all-verified-rating/{$type}?page={page_number}&per_page={count}"
       }
     ]
   },
@@ -1987,7 +1987,7 @@
   },
   {
     "type": "get",
-    "url": "/all-unverified-rating?page={page_number}&per_page={count}",
+    "url": "/all-unverified-rating/{$type}?page={page_number}&per_page={count}",
     "title": "4. Get All Given Rating",
     "name": "4",
     "group": "Unverified_Rating",
@@ -2062,7 +2062,7 @@
     "groupTitle": "Unverified_Rating",
     "sampleRequest": [
       {
-        "url": "https://reference.app/api/public/api/all-unverified-rating?page={page_number}&per_page={count}"
+        "url": "https://reference.app/api/public/api/all-unverified-rating/{$type}?page={page_number}&per_page={count}"
       }
     ]
   },
