@@ -207,7 +207,11 @@ class SentMyReferenceController extends Controller
      *{
      * "status": true,
      * "responseCode": 200,
-     * "body": [
+     * {
+     * "status": true,
+     * "responseCode": 200,
+     * "body": {
+     * "data": [
      * {
      * "id": 1,
      * "from_user_id": 1,
@@ -230,10 +234,11 @@ class SentMyReferenceController extends Controller
      * "profile_pic": null,
      * "created_at": "2021-04-25T14:27:38.000000Z",
      * "updated_at": "2021-04-25T14:27:38.000000Z"
-     * },
+     * }
+     * }
+     * ],
      * "email_to": "xyz12@company.com"
      * }
-     * ]
      * }
      * @apiUse APIError
      * @apiErrorExample {json} Error-503:
@@ -275,10 +280,10 @@ class SentMyReferenceController extends Controller
                 if (isset($video_data['user']['profile_pic'])) {
                     $body[$key]['profile_pic'] = $video_data['user']['profile_pic'];
                 }
-                $body[$key]['email_to'] = $val['email'];
             }
-
-            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $body], 200);
+            $result['data'] = $body;
+            $result['email_to'] = $send_videos[0]['email'];
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
         } else {
             return response()->json(['status' => false, 'responseCode' => 503, 'body' => "No Such Access code or token found."], 200);
         }
