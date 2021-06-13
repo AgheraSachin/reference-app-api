@@ -207,9 +207,6 @@ class SentMyReferenceController extends Controller
      *{
      * "status": true,
      * "responseCode": 200,
-     * {
-     * "status": true,
-     * "responseCode": 200,
      * "body": {
      * "data": [
      * {
@@ -237,7 +234,16 @@ class SentMyReferenceController extends Controller
      * }
      * }
      * ],
-     * "email_to": "xyz12@company.com"
+     * "email_to": "xyz12@company.com",
+     * "user": {
+     * "id": 1,
+     * "first_name": "Test1",
+     * "last_name": "Test1",
+     * "email": "test1@test.com",
+     * "profile_pic": null,
+     * "created_at": "2021-04-25T14:27:38.000000Z",
+     * "updated_at": "2021-05-13T04:34:22.000000Z"
+     * }
      * }
      * }
      * @apiUse APIError
@@ -283,6 +289,7 @@ class SentMyReferenceController extends Controller
             }
             $result['data'] = $body;
             $result['email_to'] = $send_videos[0]['email'];
+            $result['user'] = User::find($send_videos[0]['from_user_id']);
             return response()->json(['status' => true, 'responseCode' => 200, 'body' => $result], 200);
         } else {
             return response()->json(['status' => false, 'responseCode' => 503, 'body' => "No Such Access code or token found."], 200);
