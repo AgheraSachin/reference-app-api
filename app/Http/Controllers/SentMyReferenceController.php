@@ -350,7 +350,7 @@ class SentMyReferenceController extends Controller
         };
 
         foreach ($request->get('to_user_id') as $key => $val) {
-            $user = User::find($request->get('from_user_id'))->get();
+            $user = User::find($request->get('from_user_id'));
 
             Notification::create(['to_user_id' => $val, 'notification' => '<b>' . $request->get('email') . '</b> has ask you to setup a personal call with your reference <b>' . $user[0]->first_name . ' ' . $user[0]->last_name . "</b>.Don't forgot to organize this call as soon as possible"]);
         }
