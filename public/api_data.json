@@ -468,6 +468,148 @@
   },
   {
     "type": "post",
+    "url": "/contact-us",
+    "title": "1. Contact US",
+    "name": "1",
+    "group": "Contact_US",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>string</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>string</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "text",
+            "optional": false,
+            "field": "message",
+            "description": "<p>string</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  name:'John',\n  email:'John@gmail.com',\n  message:'Hey i want to reach you',\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "body",
+            "description": "<p>object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n\"status\": true,\n\"responseCode\": 200,\n\"body\": \"Successfully Sent Message.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-503:",
+          "content": "Error 503: Validation Errors\n{\n  \"success\": false,\n  \"responseCode\": 503,\n  \"body\": \"Validation Object\"\n},",
+          "type": "json"
+        },
+        {
+          "title": "Error-500:",
+          "content": "Error 500: Server Errors\n{\n  \"success\": false,\n  \"responseCode\": 500,\n  \"body\": \"Something went wrong\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/ContactUsController.php",
+    "groupTitle": "Contact_US",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/contact-us"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Api-Version",
+            "description": "<p>Api Version</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>Content type</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n     \"Api-Version\": \"v1\",\n     \"Accept\": \"application/json\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
     "url": "/accessToken",
     "title": "1. Get AccessToken",
     "name": "1",
