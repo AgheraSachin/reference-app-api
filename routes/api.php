@@ -45,4 +45,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     //sent-my-reference-video
     Route::get('my-conncections', [\App\Http\Controllers\SentMyReferenceController::class, 'connections']);
     Route::post('send-my-references', [\App\Http\Controllers\SentMyReferenceController::class, 'sendReference']);
+
+    Route::get('my-encrypt-code',[\App\Http\Controllers\AuthController::class, 'encryptCode']);
 });
