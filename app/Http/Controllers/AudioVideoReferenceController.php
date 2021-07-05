@@ -252,7 +252,7 @@ class AudioVideoReferenceController extends Controller
     public function allRatings($filter = null, Request $request)
     {
         if ($filter == 'unpublished') {
-            $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('reviwed_on','!=',null)->where('published', 0)->paginate($request->get('per_page'));
+            $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 0)->paginate($request->get('per_page'));
         } else {
             $result = VerifiedRatingRequest::where('from_user_id', Auth::user()->id)->where('published', 1)->paginate($request->get('per_page'));
         }

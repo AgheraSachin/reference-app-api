@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Crypt;
 
 
 class AuthController extends Controller
@@ -440,5 +441,13 @@ class AuthController extends Controller
         $user = User::find($id);
         $user->delete();
         return response()->json(['status' => true, 'responseCode' => 200, 'body' => "Delete Account Successfully"], 200);
+    }
+
+    public function encryptCode()
+    {
+        $user = Auth::user();
+        $encryption=Crypt::encryptString($user->id." ".$user->email);
+        $data['code'] = $encryption;
+        return response()->json(['status' => true, 'responseCode' => 200, 'body' => $data], 200);
     }
 }
