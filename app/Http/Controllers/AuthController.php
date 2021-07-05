@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RegisterPasswordMail;
+use App\Models\UnverifiedRatingRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -443,11 +444,69 @@ class AuthController extends Controller
         return response()->json(['status' => true, 'responseCode' => 200, 'body' => "Delete Account Successfully"], 200);
     }
 
+    /**
+     * @api {get} /my-encrypt-code 6. Get User Encryption Code
+     * @apiName 6
+     * @apiUse APIHeader2
+     * @apiGroup Login
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "{
+     *          "code":"asadadada"
+     *       }"
+     *  }
+     */
     public function encryptCode()
     {
         $user = Auth::user();
-        $encryption=Crypt::encryptString($user->id." ".$user->email);
+        $encryption = Crypt::encryptString($user->id . " " . $user->email);
         $data['code'] = $encryption;
         return response()->json(['status' => true, 'responseCode' => 200, 'body' => $data], 200);
+    }
+
+    /**
+     * @api {post} /iframe-data?&per_page={count} 7. Get iframe data
+     * @apiName 7
+     * @apiUse APIHeader1
+     * @apiGroup Login
+     * @apiParam {String} id Id
+     * @apiParam {number} per_page per_page
+     * @apiParamExample {json} Request-Example:
+     * {
+     *   id:'asdadadada'
+     * }
+     * @apiSuccess {Boolean} status true
+     * @apiSuccess {number} responseCode number
+     * @apiSuccessExample {json} Success-200:
+     * HTTP/1.1 200 OK
+     * {
+     *      "status": true,
+     *      "responseCode": 200,
+     *      "body": "{
+     *          "data":data
+     *       }"
+     *  }
+     */
+    public function decryptCode(Request $request)
+    {
+        try{
+            $decrypt = Crypt::decryptString($request->get('id'));
+            $id = explode(" ", $decrypt)[0];
+            $email = explode(" ", $decrypt)[1];
+
+            $result = UnverifiedRatingRequest::where('from_user_id',$id)->where('published', 1)->paginate($request->get('per_page'));
+            $average = UnverifiedRatingRequest::where('from_user_id',$id)->avg('rating');
+            $custom = collect(['average' => $average == null ? 0 : $average]);
+            $data = $custom->merge($result);
+            return response()->json(['status' => true, 'responseCode' => 200, 'body' => $data], 200);
+
+        }catch (\Exception $e){
+            return response()->json(['status' => false, 'responseCode' => 500, 'body' => $e->getMessage()], 200);
+        }
     }
 }

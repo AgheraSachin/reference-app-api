@@ -1048,6 +1048,171 @@ define({ "api": [
     }
   },
   {
+    "type": "get",
+    "url": "/my-encrypt-code",
+    "title": "6. Get User Encryption Code",
+    "name": "6",
+    "group": "Login",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": true,\n     \"responseCode\": 200,\n     \"body\": \"{\n         \"code\":\"asadadada\"\n      }\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/AuthController.php",
+    "groupTitle": "Login",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/my-encrypt-code"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>Content type</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Access Bearer token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n     \"Accept\": \"application/json\",\n     \"Authorization\": \"Bearer \".{{token}}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/iframe-data?&per_page={count}",
+    "title": "7. Get iframe data",
+    "name": "7",
+    "group": "Login",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "per_page",
+            "description": "<p>per_page</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  id:'asdadadada'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "responseCode",
+            "description": "<p>number</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-200:",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": true,\n     \"responseCode\": 200,\n     \"body\": \"{\n         \"data\":data\n      }\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "/xampp/htdocs/reference-app/app/Http/Controllers/AuthController.php",
+    "groupTitle": "Login",
+    "sampleRequest": [
+      {
+        "url": "https://reference.app/api/public/api/iframe-data?&per_page={count}"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Api-Version",
+            "description": "<p>Api Version</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>Content type</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n     \"Api-Version\": \"v1\",\n     \"Accept\": \"application/json\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "post",
     "url": "/report-bug",
     "title": "1. Report Bug",
