@@ -21,6 +21,7 @@ Route::post('request-for-unverified-rating-review', [\App\Http\Controllers\Unver
 Route::post('verify-access-code', [\App\Http\Controllers\SentMyReferenceController::class, 'verifyAccessCode']);
 Route::post('send-notification', [\App\Http\Controllers\SentMyReferenceController::class, 'sendNotification']);
 Route::post('contact-us', [\App\Http\Controllers\ContactUsController::class, 'create']);
+Route::post('iframe-data', [\App\Http\Controllers\AuthController::class, 'decryptCode']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('request-for-unverified-rating', [\App\Http\Controllers\UnverifiedRatingRequestController::class, 'makeRequest']);
